@@ -9,32 +9,13 @@ app=Flask(__name__)
 #1.login web
 @app.route("/login")
 def login():
-    return render_template('index.html',title='Log IN')
+    return render_template('index.html')
 
 
 #2.aplly account
 @app.route("/apply")
 def apply():
     return render_template('sign-up.html')
-    
-    
-    
-    """
-    <html><body>
-    <form action="/createUser" method="POST" name="applyForm">
-    <table>
-    <th>Create one new account</th>
-    <tr><td>Name:</td><td><input type="text" name="name"></td></tr>
-    <tr><td>PassWord:</td><td><input type="text" name="psw"></td></tr>
-    <tr><td>Confirm:</td><td><input type="text" name="c_psw"></td></tr>
-    <tr><td>BirthDay:</td><td><input type="text" name="birthday"></td></tr>
-    <tr><td>Email:</td><td><input type="text" name="email"></td></tr>
-    <tr><td>Country:</td><td><input type="text" name="country"></td></tr>
-    <tr><td><input type="submit" value="Confirm"></td><td><input type="reset"
-    value="Reset All"></td></tr>
-    </table></form>
-    </body></html>
-    """
 
 
 
@@ -44,7 +25,10 @@ def check():
     if request.method == "POST":
         UserName=request.form.get('username')
         PassWord=request.form.get('password')
-        
+       
+        #print(UserName)
+        #print(PassWord)
+
         flag=users.userLogin(UserName,PassWord)
         if flag == 2:
             return """<script>alert('login successful')</script>"""
