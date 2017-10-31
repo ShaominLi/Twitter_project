@@ -55,21 +55,14 @@ def createUser():
         #print(userName)
 
         user=users.Users(userName,userPsw,userBirthday,userEmail,userCountry)
-        flag=users.userApply(user)
-        if flag == 0:
-            return """<script>alert('create new account successful')</script>"""
-        elif flag == -1:
-            return """<script>alert('can't connect database')</script>"""
+        result=users.userApply(user)
+        if result == True:
+            return """<script>alert('create new account successful');location.replace("/login");</script>"""
         else:
-            #redirect(url_for("login"))
-            return """<script>alert('name exist')</script>"""
-    
+            return """<script>alert('name exist');location.replace("/apply");</script>"""
 
     else:
         return """<script>alert('create new account error')</script>"""
-
-
-
 
 
 if __name__=="__main__":
