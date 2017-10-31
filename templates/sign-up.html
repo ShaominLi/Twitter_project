@@ -28,9 +28,8 @@
 					
 
 					<!-- Start Sign In Form -->
-					<form action="#" class="fh5co-form animate-box"
-					  data-animate-effect="fadeIn" method="GET"
-					  onsubmit="return register();">
+					<form action="/createUser" class="fh5co-form animate-box"
+					  data-animate-effect="fadeIn" onsubmit="return register();">
 						<h2>Sign Up</h2>
 						<div class="form-group">
 							
@@ -42,7 +41,7 @@
 						<div class="form-group">
 							<label for="password" class="sr-only">Password</label>
 							<input type="password" class="form-control" \
-							name="password" text="" id="upass" placeholder="Password" autocomplete="off">
+							name="password" value="" id="upass" placeholder="Password" autocomplete="off">
 							<SPAN id="pswtext"></SPAN>
 						</div>
 						<div class="form-group">
@@ -57,7 +56,9 @@
 						</div>
 						<div class="form-group">
 							<label for="name" class="sr-only">Birthday</label>
-							<input type="text" class="form-control" name="birthday" placeholder="Birthday" autocomplete="off">
+							<input type="text" value="" class="form-control" id="ubirthday"
+							name="birthday" placeholder="Birthday : 1999-01-01" autocomplete="off">
+							<SPAN id="birthdaytext"></SPAN>
 						</div>
 						<div class="form-group">
 							<label for="name" class="sr-only">Country</label>

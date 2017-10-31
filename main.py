@@ -45,13 +45,16 @@ def check():
 #4.create new account
 @app.route("/createUser",methods=["POST","GET"])
 def createUser():
-    if request.method == "POST":
-        userName=request.form.get('name')
-        userPsw=request.form.get('psw')
-        userEmail=request.form.get('email')
-        userCountry=request.form.get('country')
+    if request.method == "GET":
+        userName=request.args.get('name')
+        userPsw=request.args.get('password')
+        userEmail=request.args.get('email')
+        userBirthday=request.args.get('birthday')
+        userCountry=request.args.get('country')
 
-        user=users.Users(userName,userPsw,userEmail,userCountry)
+        #print(userName)
+
+        user=users.Users(userName,userPsw,userBirthday,userEmail,userCountry)
         flag=users.userApply(user)
         if flag == 0:
             return """<script>alert('create new account successful')</script>"""
@@ -60,7 +63,7 @@ def createUser():
         else:
             #redirect(url_for("login"))
             return """<script>alert('name exist')</script>"""
-
+    
 
     else:
         return """<script>alert('create new account error')</script>"""

@@ -36,7 +36,7 @@ def userLogin(user=Users()):
 def userApply(user=Users()):
     t_sql_insert="insert into \
             users(name,password,birthday,email,country,inscription_date,picture) \
-            values('{name}','{psw}','{birthday}','{email}','{country}',current_timestap(0),'{picture}');"
+            values('{name}','{psw}','{birthday}','{email}','{country}',current_timestamp(0),'{picture}');"
     sql_insert=t_sql_insert.format(name=user.name,psw=user.password,birthday=user.birthday,\
             email=user.email,country=user.country,picture=None)
 
@@ -45,7 +45,7 @@ def userApply(user=Users()):
     
     #no name
     if checkName[0][0] == 0:
-        sql.insertDB(conn,sql_insert)
+        sql.insertDB(user.conn,sql_insert)
         return True
     else:
         return False
