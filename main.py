@@ -32,10 +32,10 @@ def check():
         user=users.Users(UserName,PassWord)
         result=users.userLogin(user)
         if result == True:
-            return """<script>alert('login successful')</script>"""
+            return """<script>alert('login successful');location.replace("/mainWindow");</script>"""
         else:
             #redirect(url_for("login"))
-            return """<script>alert('username or password error')</script>"""
+            return """<script>alert('username or password error');location.replace("/login");</script>"""
     else:
         print("get data error")
 
@@ -63,6 +63,12 @@ def createUser():
 
     else:
         return """<script>alert('create new account error')</script>"""
+
+#5.main window
+@app.route("/mainWindow",methods=["POST","GET"])
+def mainWindow():
+    return render_template('mainWindow.html')
+
 
 
 if __name__=="__main__":
