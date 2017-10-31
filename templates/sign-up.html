@@ -14,14 +14,13 @@
 	<link href="{{url_for('static',filename='css/bootstrap.min.css')}}" rel="stylesheet" type="text/css"/>
 	<link href="{{url_for('static',filename='css/animate.css')}}"  rel="stylesheet" type="text/css"/>
 	<link href="{{url_for('static',filename='css/style.css')}}" rel="stylesheet" type="text/css"/>
+	<link href="/static/css/style.css" rel="stylesheet" type="text/css"/>
 
-	<!-- Modernizr JS -->
+	<!-- Modernizr JS 
 	<script src="{{url_for('static',filename = 'js/modernizr-2.6.2.min.js')}}"></script>
-	<!-- FOR IE9 below -->
-	<!--[if lt IE 9]>
-	<script src="js/respond.min.js"></script>
-	<![endif]-->
-
+	
+	<script src="{{url_for('static',filename = 'js/signUp.js')}}"></script>
+	-->
 	</head>
 	<body>
 			<div class="row">
@@ -29,31 +28,45 @@
 					
 
 					<!-- Start Sign In Form -->
-					<form action="#" class="fh5co-form animate-box" data-animate-effect="fadeIn">
+					<form action="#" class="fh5co-form animate-box"
+					  data-animate-effect="fadeIn" method="GET"
+					  onsubmit="return register();">
 						<h2>Sign Up</h2>
 						<div class="form-group">
-							<div class="alert alert-success" role="alert">Your info has been saved.</div>
-						</div>
+							
 						<div class="form-group">
 							<label for="name" class="sr-only">Name</label>
-							<input type="text" class="form-control" id="name" placeholder="Name" autocomplete="off">
-						</div>
-						<div class="form-group">
-							<label for="email" class="sr-only">Email</label>
-							<input type="email" class="form-control" id="email" placeholder="Email" autocomplete="off">
+							<input type="text" class="form-control" name="name" id="uname" placeholder="Name" autocomplete="off" text="">
+							<SPAN id="nametext"></SPAN>
 						</div>
 						<div class="form-group">
 							<label for="password" class="sr-only">Password</label>
-							<input type="password" class="form-control" id="password" placeholder="Password" autocomplete="off">
+							<input type="password" class="form-control" \
+							name="password" text="" id="upass" placeholder="Password" autocomplete="off">
+							<SPAN id="pswtext"></SPAN>
 						</div>
 						<div class="form-group">
 							<label for="re-password" class="sr-only">Re-type Password</label>
-							<input type="password" class="form-control" id="re-password" placeholder="Re-type Password" autocomplete="off">
+							<input type="password"  id="urpass" class="form-control" name="re-password" placeholder="Re-type Password" autocomplete="off">
+							<SPAN id="rpswtext"></SPAN>
 						</div>
-						
+						<div class="form-group">
+							<label for="email" class="sr-only">Email</label>
+							<input type="email" id="uemail" class="form-control" name="email" placeholder="Email" autocomplete="off">
+							<SPAN id="emailtext"></SPAN>
+						</div>
+						<div class="form-group">
+							<label for="name" class="sr-only">Birthday</label>
+							<input type="text" class="form-control" name="birthday" placeholder="Birthday" autocomplete="off">
+						</div>
+						<div class="form-group">
+							<label for="name" class="sr-only">Country</label>
+							<input type="text" class="form-control" name="country" placeholder="Country" autocomplete="off">
+						</div>
+						<!--
 						<div class="form-group">
 							<p>Already registered? <a href="index.html">Sign In</a></p>
-						</div>
+						</div>-->
 						<div class="form-group">
 							<input type="submit" value="Sign Up" class="btn btn-primary">
 						</div>
@@ -75,6 +88,10 @@
 	<script src="{{url_for('static',filename = 'js/jquery.waypoints.min.js')}}"></script>
 	<!-- Main JS -->
 	<script src="{{url_for('static',filename = 'js/main.js')}}"></script>
+	
+	<script src="{{url_for('static',filename = 'js/modernizr-2.6.2.min.js')}}"></script>
+	
+	<script src="{{url_for('static',filename = 'js/signUp.js')}}"></script>
 
 	</body>
 </html>

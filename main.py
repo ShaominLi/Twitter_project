@@ -28,12 +28,11 @@ def check():
        
         #print(UserName)
         #print(PassWord)
-
-        flag=users.userLogin(UserName,PassWord)
-        if flag == 2:
+        
+        user=users.Users(UserName,PassWord)
+        result=users.userLogin(user)
+        if result == True:
             return """<script>alert('login successful')</script>"""
-        elif flag == -1:
-            return """<script>alert('can't connect database')</script>"""
         else:
             #redirect(url_for("login"))
             return """<script>alert('username or password error')</script>"""

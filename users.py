@@ -1,80 +1,54 @@
 import sql
 
 class Users:
-    def __init__(self,name=None,password=None,email=None,country=None):
-        self.name=name;
-        self.password=password;
-        self.birthday=None;
-        self.email=email;
-        self.country=country;
-        self.inscription_date=None;
-        self.picture=None;
+    def __init__(self,name=None,password=None,birthday=None,email=None,country=None):
+        self.name=name
+        self.password=password
+        self.birthday=birthday
+        self.email=email
+        self.country=country
+        self.inscription_date=None
+        self.picture=None
+        try:
+            self.conn=sql.connectDB("test","lishaomin","19931004")
+        except:
+            pass 
+
+    def clean(self):
+        sql.closeDB(self.conn)
 
 
 #1.user login 
-'''
-return:
-    -1:false connect 
-     0:name error 
-     1:password error 
-     2:login success
-'''
-def userLogin(username,password):
-    conn=sql.connectDB("test","lishaomin","19931004")
-    flag=-1
-    if conn == None:
-        return flag
+def userLogin(user=Users()):
+
+    sqlName="select count(*) from users where name='%s' and \
+            password='%s';"%(user.name,user.password)
+    checkName=sql.queryDB(user.conn,sqlName)
+
+    result=checkName[0][0]
+    if result == 0:
+        return False
     else:
-        flag=0
-        sqlName="select count(*) from users where name='%s';"%(username)
-        checkName=sql.queryDB(conn,sqlName)
-        #check name
-        for name in checkName:
-            flag=flag+name[0]
-        #check password
-        if flag == 1:
-            sqlPsw="select password from users where name='%s';"%(username)
-            checkPsw=sql.queryDB(conn,sqlPsw)
-            for psw in checkPsw:
-                if password == psw[0]:
-                    flag=flag+1
-                    break
-        
-        sql.closeDB(conn)
-        return flag
+        user.conn=sql.connectDB("test","lishaomin","19931004")
+        return True
 
 #2.user apply
-'''
-    return:
-        -1:connect error
-         1:name exist
-         0:insert success
-'''
 def userApply(user=Users()):
-    '''
-    sql_insert1="insert into users(name,password,birthday,email,country,inscription_date,picture) \
-            values('{name}','{psw}','{birthday}','{email}','{country}','{ins_date}','{picture}');"
-    '''
-    t_sql_insert="insert into users(name,password,email,country) values('{name}','{psw}','{email}','{country}');"
-    sql_insert=t_sql_insert.format(name=user.name,psw=user.password,email=user.email,country=user.country)
+    t_sql_insert="insert into \
+            users(name,password,birthday,email,country,inscription_date,picture) \
+            values('{name}','{psw}','{birthday}','{email}','{country}',current_timestap(0),'{picture}');"
+    sql_insert=t_sql_insert.format(name=user.name,psw=user.password,birthday=user.birthday,\
+            email=user.email,country=user.country,picture=None)
 
-    conn=sql.connectDB("test","lishaomin","19931004")
-    flag=-1
-    if conn == None:
-        return flag
+    sqlName="select count(*) from users where name='%s';"%(user.name)
+    checkName=sql.queryDB(user.conn,sqlName)
+    
+    #no name
+    if checkName[0][0] == 0:
+        sql.insertDB(conn,sql_insert)
+        return True
     else:
-        flag=0;
-        #check name
-        sqlName="select count(*) from users where name='%s';"%(user.name)
-        checkName=sql.queryDB(conn,sqlName)
-        for name in checkName:
-            flag=flag+name[0]
-        
-        if flag == 0:
-            sql.insertDB(conn,sql_insert)
-        
-        sql.closeDB(conn)
-        return flag;
+        return False
 
 
 
