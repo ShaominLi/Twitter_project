@@ -63,7 +63,7 @@ body a {
 }
 
 .container {
-    width: 55%;
+    width: 70%;
     margin: 0 auto;
 }
 
@@ -222,6 +222,22 @@ p {
 .add a:hover {
     color: #33C39B;
 }
+.sign-out{
+    float:right;
+    width: 20%;
+    padding-top: 7px;
+}
+.sign-out a{
+    padding: 7px 30px;
+    color: #FFF;
+    font-weight: bold;
+    background-color: #70658a;
+    border-radius: 5px;
+}
+.sign-out a:hover {
+    background-color: #33C39B;
+}
+
 .checkout-btn {
     width: 30%;
     float: left;

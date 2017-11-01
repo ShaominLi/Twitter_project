@@ -11,13 +11,18 @@ app=Flask(__name__)
 def login():
     return render_template('index.html')
 
+@app.route("/sign_out")
+def sign_out():
+    global user
+    user.clean()
+    return ;
 
 #2.aplly account
 @app.route("/apply")
 def apply():
     return render_template('sign-up.html')
 
-
+user=None;
 
 #3.check UserName and PassWord
 @app.route("/check",methods=["POST","GET"])
@@ -29,12 +34,14 @@ def check():
         #print(UserName)
         #print(PassWord)
         
+        global user
+
         user=users.Users(UserName,PassWord)
         result=user.userLogin()
         if result == True:
-            return """<script>alert('login successful');location.replace("/mainWindow");</script>"""
+            return """<script>location.replace("/mainWindow");</script>"""
         else:
-            #redirect(url_for("login"))
+            user.clean()
             return """<script>alert('username or password error');location.replace("/login");</script>"""
     else:
         print("get data error")
@@ -53,12 +60,13 @@ def createUser():
         userCountry=request.args.get('country')
 
         #print(userName)
-
+        global user
         user=users.Users(userName,userPsw,userBirthday,userEmail,userCountry)
         result=user.userApply()
         if result == True:
-            return """<script>alert('create new account successful');location.replace("/login");</script>"""
+            return """<script>alert('create new account successful');location.replace("/mainWindow");</script>"""
         else:
+            user.clean()
             return """<script>alert('name exist');location.replace("/apply");</script>"""
 
     else:
@@ -67,6 +75,7 @@ def createUser():
 #5.main window
 @app.route("/mainWindow",methods=["POST","GET"])
 def mainWindow():
+    #print(user.name)
     return render_template('mainWindow.html')
 
 

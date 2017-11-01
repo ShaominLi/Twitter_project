@@ -15,6 +15,13 @@ class Users:
             pass 
 
     def clean(self):
+        self.name=None;
+        self.password=None;
+        self.birthday=None;
+        self.email=None;
+        self.count=None;
+        self.inscription_date=None;
+        self.picture=None;
         sql.closeDB(self.conn)
 
     def userLogin(self):

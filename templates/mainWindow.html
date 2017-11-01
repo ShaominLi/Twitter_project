@@ -6,13 +6,22 @@
 <!-- For-Mobile-Apps -->
 
 	<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
-<!-- //For-Mobile-Apps 
+	<!-- //For-Mobile-Apps--> 
 
 <!-- Custom-Theme-Files -->
 	<link href="{{url_for('static',filename='css/Mainstyle.css')}}" rel="stylesheet" type="text/css"/>
 <!-- //Custom-Theme-Files -->
 
+	<script>
+	function sign_out()
+	{
+		if(confirm("confirm sign out?"))
+			location.replace("/login")	
+				
+	}
+	</script>
 <!-- Remove-Item-JavaScript -->
+
 	<script src="{{url_for('static',filename = 'js/jquery-1.11.1.min.js')}}"></script>
 	<script>$(document).ready(function(c) {
 		$('.alert-close1').on('click', function(c){
@@ -46,7 +55,10 @@
 <body>
 
 	<h1>Welcome our world</h1>
-
+	<div class="sign-out">
+		<a href="javascript:sign_out();">Sign out</a>
+	</div>
+	
 	<!-- Content-Starts-Here -->
 	<div class="container">
 
@@ -61,8 +73,10 @@
 			<div class="price">
 				<h3>Like</h3>
 			</div>
+
 			<div class="clear"></div>
 		</div>
+		
 		<!-- //Mainbar-Ends-Here -->
 
 		<!-- Items-Starts-Here -->
@@ -78,6 +92,7 @@
 					<div class="title1">
 						<p>Gucci Gg1078/S 4Uavk Grey Wayfarer</p>
 					</div>
+
 					<div class="quantity1">
 						<form action="action_page.php">
 							<input type="number" name="quantity" min="1" max="10" value="1">
