@@ -1,5 +1,5 @@
 from flask import Flask,session,redirect,url_for,request,render_template
-import users
+from modules import users
 
 app=Flask(__name__)
 
@@ -30,7 +30,7 @@ def check():
         #print(PassWord)
         
         user=users.Users(UserName,PassWord)
-        result=users.userLogin(user)
+        result=user.userLogin()
         if result == True:
             return """<script>alert('login successful');location.replace("/mainWindow");</script>"""
         else:
@@ -55,7 +55,7 @@ def createUser():
         #print(userName)
 
         user=users.Users(userName,userPsw,userBirthday,userEmail,userCountry)
-        result=users.userApply(user)
+        result=user.userApply()
         if result == True:
             return """<script>alert('create new account successful');location.replace("/login");</script>"""
         else:
