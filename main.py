@@ -1,5 +1,6 @@
 from flask import Flask,session,redirect,url_for,request,render_template
-from modules import users
+from modules import users,post,comment,data
+import json
 
 app=Flask(__name__)
 
@@ -75,8 +76,24 @@ def createUser():
 #5.main window
 @app.route("/mainWindow",methods=["POST","GET"])
 def mainWindow():
-    #print(user.name)
-    return render_template('mainWindow.html')
+    global user
+    
+    posts=post.Post(user)
+    allBlogs=posts.getAllPosts()
+
+    datas=[];
+    for item in allBlogs:
+        datalist={
+                'userid':item[0],
+                'post':item[1]
+                }
+        datas.append(datalist)
+    dataJson=json.dumps(datas)
+    #test='''[{"name":"111"},{"name":"222"}]'''
+    #test=json.loads(dataJson)
+    #test="%s"%(dataJson)
+    #print(test)
+    return render_template('mainWindow.html',user=user,json=dataJson)
 
 
 

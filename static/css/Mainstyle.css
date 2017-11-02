@@ -63,8 +63,8 @@ body a {
 }
 
 .container {
-    width: 70%;
-    margin: 0 auto;
+    width:100%;
+    height:100%;
 }
 
 h1 {
@@ -78,7 +78,7 @@ h1 {
 .main-bar {
     padding: 20px 10px;
     background-color: #70658A;
-    margin-bottom: 30px;
+    margin-bottom: 10px;
     border-radius: 5px;
 }
 .product {
@@ -223,20 +223,45 @@ p {
     color: #33C39B;
 }
 .sign-out{
-    float:right;
-    width: 20%;
-    padding-top: 7px;
+    margin-left:10%;
+    padding-top: 15px;
 }
 .sign-out a{
     padding: 7px 30px;
     color: #FFF;
     font-weight: bold;
     background-color: #70658a;
-    border-radius: 5px;
+    border-radius: 15px;
 }
+
+.sign-out li{
+    margin-top:20px;
+}
+
 .sign-out a:hover {
     background-color: #33C39B;
 }
+
+.user{
+    color: #FFF;
+    float:left;
+    width: 10%;
+    padding-top: 7px;
+    margin-left:110px;
+    
+}
+.user scan:hover{
+background-color: #33C39B;
+}
+.user scan{
+    padding: 7px 30px;
+    color: #FFF;
+    font-weight: bold;
+    background-color: #70658a;
+    border-radius: 5px;
+
+}
+
 
 .checkout-btn {
     width: 30%;
@@ -272,7 +297,7 @@ p {
 
 /*-- Index-Page-Styling --*/
 
-/*--- Responsive Code ---*/
+/*--- Responsive Code ---
 
 @media screen and (max-width: 1920px) {
     h1 {
@@ -370,7 +395,7 @@ p {
         width: 90%;
     }
 }
-
+*/
 @media screen and (max-width: 736px) {
     h1 {
         font-size: 40px;
@@ -621,5 +646,6 @@ p {
         margin-right: 5px;
     }
 }
+
 
 /*--- Responsive Code ---*/
