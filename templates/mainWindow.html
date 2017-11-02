@@ -6,6 +6,7 @@
 	<link href="{{url_for('static',filename='css/Mainstyle.css')}}" rel="stylesheet" type="text/css"/>
 <!-- //Custom-Theme-Files -->
 	<script src="{{url_for('static',filename = 'js/jquery-1.11.1.min.js')}}"></script>
+	
 	<script type="text/javascript">
 	function sign_out()
 	{
@@ -24,7 +25,8 @@
 		display = true;
 	    }
 	}
-	function data(){
+
+	/*function data(){
 		//alert("qewerewfe");
 		//var str = "[{\"name\":\"111\", \"age\":11},{\"name\":\"222\", \"age\":11}]";  
 		//var str='{{json}}';
@@ -39,14 +41,54 @@
 			alert(obj[i].post);
 		}
 		
+	}*/
+	var pagenum=0;
+	window.onload = function() {
+	  	var str=JSON.stringify({{ json|tojson|safe }} );
+		var obj=$.parseJSON(JSON.parse(str));
+		var t = document.createElement('table');
+		t.style="border:2px; width:100%;table-layout:fixed;text-align: center;";	
+		for (var i=0;i<obj.length;i++)
+		{
+		     var r = t.insertRow();
+		        var name = r.insertCell();
+		     name.innerHTML = obj[i].username;
+		     name.style="width:15%";
+			var post = r.insertCell();
+		     post.style="width:60%;table-layout:fixed;table-layout:fixed;text-align: center;";
+			var input = document.createElement('textarea');
+			//input.setAttribute('type', 'text');
+		     	input.value = obj[i].post;
+			input.style="width:100%;font-size: 12px;font-weight: bold;";
+			input.disabled= "true ";
+		     post.appendChild(input);
+			var comment = r.insertCell();
+		     comment.innerHTML = "sssss";
+		     comment.style="width:15%";
+			var like = r.insertCell();
+		     like.innerHTML = "fffff";
+		     like.style="width:10%";
+		     
+		 }
+		       
+		document.getElementById('datas').appendChild(t);
+		PagingManage($('#complete'),obj.length, 8, 1);		
+		pagenum=obj.length;
+		//t.setAttribute('border', '1');     
+	  
 	}
-	data();
 	</script>
 <!-- Remove-Item-JavaScript -->
-
-	
-
-
+<script type="text/javascript" src="{{url_for('static',filename = 'js/page.js')}}"></script>
+<script>
+function go() {
+    PagingManage($('#complete'),pagenum, 5, 1);
+};
+function switchPage(divId, page) {
+    
+alert('to do...');
+}
+</script>
 </head>
 <body>
 <div style="width:100%; height:100%;">
@@ -54,19 +96,17 @@
 <div style="width:20%; height:100%; float:left;"></div>
 
 <div style="width:60%; height:100%; float:left;">
-<h1 style="margin-top:10%;">Welcome our world</h1>
+<h1 style="margin-top:5%;">Welcome our world</h1>
 <div class="container">
 <!-- Mainbar-Starts-Here -->
 		<div class="main-bar" style="height:30px;">
 			<div class="product">
-				<h3>Blogs</h3>
+				<h3>User</h3>
 			</div>
 			<div class="quantity">
-				<h3>Comments</h3>
+				<h3>Blog</h3>
 			</div>
-			<div class="price">
-				<h3>Like</h3>
-			</div>
+			
 
 			<div class="clear"></div>
 		</div>
@@ -75,9 +115,6 @@
 
 		<!-- Items-Starts-Here -->
 		<div class="items" id="datas">
-		
-
- 
 			
 
 		</div>
@@ -86,9 +123,8 @@
 		
 
 		<!-- end -->
-		<div class="checkout">
-			
-		</div>
+		<div id="complete" class="pagination"></div>
+		
 		
 </div>
 	
@@ -112,7 +148,6 @@
 
 
 </div>
-
 
 
 </body>

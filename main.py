@@ -84,7 +84,7 @@ def mainWindow():
     datas=[];
     for item in allBlogs:
         datalist={
-                'userid':item[0],
+                'username':item[0],
                 'post':item[1]
                 }
         datas.append(datalist)

@@ -6,7 +6,8 @@ class Post:
         self.user=user;
 
     def getAllPosts(self):
-        sqlText="select userid,comment from post order by date desc;"
+        sqlText="select users.name,post.comment from users,post \
+                where post.userid=users.userid order by post.date desc;"
         result=sql.queryDB(self.user.conn,sqlText)
         return result;
     
