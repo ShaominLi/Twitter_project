@@ -33,9 +33,12 @@ function PagingManage(obj, pageCount, pageSize, currentPage) {
   
         //大于一页内容  
         if (pageNum > 1) {  
-            if (currentpage > 1) {  
-                pagehtml += '<li style="float:left;list-style:none;"><a href="javascript:void(0);" onclick="switchPage(\'' + divId + '\',' + (currentpage - 1) + ')">上一页|</a></li>';  
-            }  
+		var repage=currentpage-1;
+		if(repage==0)
+			repage=1;
+            //if (currentpage > 1) {  
+                pagehtml += '<li style="float:left;list-style:none;"><a href="javascript:void(0);" onclick="switchPage(\'' + divId + '\',' + repage + ')">上一页|</a></li>';  
+           // }  
   
             var startPage = 1;  
             //计算页码开始位置  

@@ -26,57 +26,57 @@
 	    }
 	}
 
-	/*function data(){
-		//alert("qewerewfe");
-		//var str = "[{\"name\":\"111\", \"age\":11},{\"name\":\"222\", \"age\":11}]";  
-		//var str='{{json}}';
-		var str=JSON.stringify({{ json|tojson|safe }} );
-		//alert(str);	
-		//var obj=JSON.parse(str);
-		//var str2 =$.parseJSON( str ); 
-		var obj=$.parseJSON(JSON.parse(str))
-		//var obj={{ json|tojson|safe }};
-		for (var i=0;i<obj.length;i++)
-		{
-			alert(obj[i].post);
-		}
-		
-	}*/
-	var pagenum=0;
-	window.onload = function() {
-	  	var str=JSON.stringify({{ json|tojson|safe }} );
-		var obj=$.parseJSON(JSON.parse(str));
+	function showdata(index,end){
 		var t = document.createElement('table');
-		t.style="border:2px; width:100%;table-layout:fixed;text-align: center;";	
-		for (var i=0;i<obj.length;i++)
+		t.style="border:2px; width:100%;table-layout:fixed;text-align: center;";
+		
+		for (var i=index;i<end;i++)
 		{
-		     var r = t.insertRow();
-		        var name = r.insertCell();
-		     name.innerHTML = obj[i].username;
-		     name.style="width:15%";
+			var r = t.insertRow();
+			var name = r.insertCell();
+			name.innerHTML = obj[i].username;
+			name.style="width:15%";
 			var post = r.insertCell();
-		     post.style="width:60%;table-layout:fixed;table-layout:fixed;text-align: center;";
+			post.style="width:60%;table-layout:fixed;table-layout:fixed;text-align: center;";
 			var input = document.createElement('textarea');
 			//input.setAttribute('type', 'text');
-		     	input.value = obj[i].post;
+			input.value = obj[i].post;
 			input.style="width:100%;font-size: 12px;font-weight: bold;";
 			input.disabled= "true ";
-		     post.appendChild(input);
+			post.appendChild(input);
 			var comment = r.insertCell();
-		     comment.innerHTML = "sssss";
-		     comment.style="width:15%";
+			comment.innerHTML = "sssss";
+			comment.style="width:15%";
 			var like = r.insertCell();
-		     like.innerHTML = "fffff";
-		     like.style="width:10%";
+			like.innerHTML = "fffff";
+			like.style="width:10%";
 		     
-		 }
-		       
+		}
 		document.getElementById('datas').appendChild(t);
+		
+	}
+	
+	window.onload = function() {
+		
+	  	var str=JSON.stringify({{ json|tojson|safe }} );
+		obj=$.parseJSON(JSON.parse(str));
+		
+		var index=0,end=8;
+		if(obj.length<end)
+			end=obj.length;
+		
+		showdata(index,end);
+		//document.getElementById('dataframe').getElementById('datas').appendChild(t);
 		PagingManage($('#complete'),obj.length, 8, 1);		
 		pagenum=obj.length;
 		//t.setAttribute('border', '1');     
 	  
 	}
+	/*window.onload = function() {
+		var str='<iframe id="dataframe" frameborder="0" width="100%"  src="'+'{{url_for("static",filename = "data.html")}}'+'"></iframe>';
+		$("#datas").html(str)
+		//alert(str);
+	}*/
 	</script>
 <!-- Remove-Item-JavaScript -->
 <script type="text/javascript" src="{{url_for('static',filename = 'js/page.js')}}"></script>
@@ -85,8 +85,15 @@ function go() {
     PagingManage($('#complete'),pagenum, 5, 1);
 };
 function switchPage(divId, page) {
-    
-alert('to do...');
+    	var str="";
+	$("#datas").html(str)
+	
+	var index=(page-1)*8,end=index+8;
+        if(obj.length<end)
+		end=obj.length;
+	showdata(index,end);
+	
+	//alert(page);
 }
 </script>
 </head>
@@ -114,8 +121,9 @@ alert('to do...');
 		<!-- //Mainbar-Ends-Here -->
 
 		<!-- Items-Starts-Here -->
+		
 		<div class="items" id="datas">
-			
+		
 
 		</div>
 		<!-- //Items-Ends-Here -->
