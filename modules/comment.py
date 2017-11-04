@@ -10,8 +10,9 @@ class Comment:
         result=sql.queryDB(self.user.conn,sqlText)
         return result;
     
-    def getCommentsByPost(self,postid):
-        sqlText="select comment from comments order by date desc where postid=%d"%(postid)
+    def getCommentsByPostid(self,postid):
+        sqlText="select name,comment from users,comments where \
+                users.userid=comments.userid and postid=%d order by date desc;"%(postid)
         result=sql.queryDB(self.user.conn,sqlText)
         return result;
 

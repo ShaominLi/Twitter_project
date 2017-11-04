@@ -85,7 +85,8 @@ def mainWindow():
     for item in allBlogs:
         datalist={
                 'username':item[0],
-                'post':item[1]
+                'post':item[1],
+                'postid':item[2]
                 }
         datas.append(datalist)
     dataJson=json.dumps(datas)
@@ -95,6 +96,43 @@ def mainWindow():
     #print(test)
     return render_template('mainWindow.html',user=user,json=dataJson)
 
+
+
+
+postJson=None
+commentJson=None
+#6.look through comments
+@app.route("/Lcomment",methods=["POST","GET"])
+def Lcomment():
+    global postJson,commentJson
+    data=json.loads(request.form.get('data'))
+    postid=int(data["postid"])
+    #print(postid)
+    posts=post.Post(user)
+    post_datas=posts.getPostsByPostid(postid)
+    postJson=[post_datas[0][0],post_datas[0][1]]
+
+    comments=comment.Comment(user)
+    comment_datas=comments.getCommentsByPostid(postid)
+    comment_data=[];
+    for item in comment_datas:
+        datalist={
+                'username':item[0],
+                'comment':item[1]
+                }
+        comment_data.append(datalist)
+    commentJson=json.dumps(comment_data)
+    
+    return ""
+    #print("okkkkkkkk")
+
+@app.route("/commentWeb",methods=["POST","GET"])
+def commentWeb():
+    global postJson,commentJson
+    return render_template('comment.html',user=user,username=postJson[0],\
+            userpost=postJson[1],commentjson=commentJson)
+    
+    #return render_template('comment.html',user=user)
 
 
 if __name__=="__main__":

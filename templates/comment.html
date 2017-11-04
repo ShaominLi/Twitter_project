@@ -7,30 +7,8 @@
 <!-- //Custom-Theme-Files -->
 	<script src="{{url_for('static',filename = 'js/jquery-1.11.1.min.js')}}"></script>
 	
-	<script type="text/javascript">
-	function sign_out()
-	{
-		if(confirm("confirm sign out?"))
-			location.replace("/login")	
-				
-	}
-	function comment(obj)
-	{
-		var data = {
-         	data: JSON.stringify({"postid": obj.id})
-	   	}
-		     $.ajax({
-			url:"/Lcomment",
-			type: 'POST',
-			data: data,
-			success: function (msg) {
-			    //location.replace("/commentWeb");
-				window.location.href="/commentWeb";  
-			}
-    			});
-		//location.replace("");
-				
-	}
+	<script type="text/javascript" src="{{url_for('static',filename = 'js/page.js')}}"></script>
+<script>
 	var display = false;
 	function show(){
 	    if(display){
@@ -42,7 +20,6 @@
 		display = true;
 	    }
 	}
-
 	function showdata(index,end){
 		var t = document.createElement('table');
 		t.style="border:2px; width:100%;table-layout:fixed;text-align: center;";
@@ -57,62 +34,49 @@
 			post.style="width:60%;table-layout:fixed;table-layout:fixed;text-align: center;";
 			var input = document.createElement('textarea');
 			//input.setAttribute('type', 'text');
-			input.value = obj[i].post;
+			input.value = obj[i].comment;
 			input.style="width:100%;font-size: 12px;font-weight: bold;vertical-align:middle;";
 			input.disabled= "true ";
 			post.appendChild(input);
-			var comment = r.insertCell();
-			comment.innerHTML = "<a style='color:#000' href='javascript:void(0);' onclick='comment(this)' id='"+obj[i].postid+"' >comments</a>";
-			//comment.id=obj[i].postid;
-			comment.style="width:15%;vertical-align:middle;";
-			var like = r.insertCell();
-			like.innerHTML = "fffff";
-			like.style="width:10%;vertical-align:middle;";
 		     
 		}
-		document.getElementById('datas').appendChild(t);
+		document.getElementById('comments').appendChild(t);
 		
 	}
-	
+
 	window.onload = function() {
 		
-	  	var str=JSON.stringify({{ json|tojson|safe }} );
-		obj=$.parseJSON(JSON.parse(str));
+		  	var str=JSON.stringify({{ commentjson|tojson|safe }} );
+			obj=$.parseJSON(JSON.parse(str));
+			
+			var index=0,end=5;
+			if(obj.length<end)
+				end=obj.length;
 		
-		var index=0,end=8;
-		if(obj.length<end)
-			end=obj.length;
-		
-		showdata(index,end);
-		//document.getElementById('dataframe').getElementById('datas').appendChild(t);
-		PagingManage($('#complete'),obj.length, 8, 1);		
-		pagenum=obj.length;
-		//t.setAttribute('border', '1');     
-	  
-	}
-	/*window.onload = function() {
-		var str='<iframe id="dataframe" frameborder="0" width="100%"  src="'+'{{url_for("static",filename = "data.html")}}'+'"></iframe>';
-		$("#datas").html(str)
-		//alert(str);
-	}*/
-	</script>
-<!-- Remove-Item-JavaScript -->
-<script type="text/javascript" src="{{url_for('static',filename = 'js/page.js')}}"></script>
-<script>
+			showdata(index,end);
+			
+			PagingManage($('#complete'),obj.length, 5, 1);		
+			pagenum=obj.length;
+			
+		  
+		}
+	
 function go() {
     PagingManage($('#complete'),pagenum, 5, 1);
 };
 function switchPage(divId, page) {
     	var str="";
-	$("#datas").html(str)
+	$("#comments").html(str)
 	
-	var index=(page-1)*8,end=index+8;
+	var index=(page-1)*5,end=index+5;
         if(obj.length<end)
 		end=obj.length;
 	showdata(index,end);
 	
 	//alert(page);
 }
+
+
 </script>
 </head>
 <body>
@@ -125,31 +89,36 @@ function switchPage(divId, page) {
 <div class="container">
 <!-- Mainbar-Starts-Here -->
 		<div class="main-bar" style="height:30px;">
-			<div class="product">
-				<h3>User</h3>
+			<div class="comment">
+				<h3>Comments</h3>
 			</div>
-			<div class="quantity">
-				<h3>Blog</h3>
+		</div>
+		
+		
+		
+		<div class="items" id="datas">
+			<!-- user post -->
+			<div style="text-align: center;width:100%;height:7%;background-color: #70658A;border-radius: 5px;margin-bottom: 3px;">
+			<div style="width:20%;height:100%; float:left;line-height:50px;color:#FFFFFF;font-weight: bold;">{{username}}</div> 
+			<div style="width:80%;height:100%; float:left;">
+				<textarea style="font-weight:bold;width:100%;height:100%;">{{userpost}}</textarea>			
+			</div>			
 			</div>
 			
 
-			<div class="clear"></div>
+			<div style="height:5px;margin-bottom: 3px;background-color: #70658A;"></div>
+			
+			<!-- other comment -->	
+			<div>			
+			<div id="comments" style="color:#FFFFFF;font-weight:bold;width:100%;width:100%;height:auto;background-color: #70658A;border-radius: 5px;margin-bottom: 3px;"></div>
+			<div id="complete" class="pagination" style="margin-bottom: 30px;"></div>
+			</div>
+			<!-- my comment -->
+			<div style="width:100%;height:10%;background-color: #70658A;border-radius: 5px;margin-bottom: 3px;"></div>
+
 		</div>
 		
-		<!-- //Mainbar-Ends-Here -->
-
-		<!-- Items-Starts-Here -->
 		
-		<div class="items" id="datas">
-		
-
-		</div>
-		<!-- //Items-Ends-Here -->
-
-		
-
-		<!-- end -->
-		<div id="complete" class="pagination"></div>
 		
 		
 </div>
