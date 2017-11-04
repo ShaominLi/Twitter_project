@@ -20,4 +20,8 @@ class Comment:
         sqlText="select userid from comment_like where commentid=%d"%(commentid)
         result=sql.queryDB(self.user.conn,sqlText)
         return result;
-
+	
+    def insertData(self,comment,userid,postid):
+        sqlText="insert into comments(comment,userid,date,postid) values('%s',%d,current_timestamp(0),%d);"%(comment,userid,postid)
+        result=sql.insertDB(self.user.conn,sqlText)
+        return result;

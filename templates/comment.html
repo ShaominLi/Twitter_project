@@ -41,11 +41,11 @@
 		     
 		}
 		document.getElementById('comments').appendChild(t);
-		
+		//alert("okkkkk");
 	}
 
 	window.onload = function() {
-		
+
 		  	var str=JSON.stringify({{ commentjson|tojson|safe }} );
 			obj=$.parseJSON(JSON.parse(str));
 			
@@ -58,6 +58,7 @@
 			PagingManage($('#complete'),obj.length, 5, 1);		
 			pagenum=obj.length;
 			
+			//alert(end);
 		  
 		}
 	
@@ -76,6 +77,28 @@ function switchPage(divId, page) {
 	//alert(page);
 }
 
+function submit()
+	{	
+		if(confirm("confirm submit?")){
+			var postid={{postid}};
+			var comment=document.getElementById("mycomment").value;
+			//alert(comment);
+			var data = {
+		 	data: JSON.stringify({"postid": postid,"comment":comment})
+		   	}
+			     $.ajax({
+				url:"/SubComment",
+				type: 'POST',
+				data: data,
+				success: function (msg) {
+				    //alert("dsfsf");
+				    window.location.href="/newcommentWeb"; 
+				}
+	    			});
+		}
+		//location.replace("");
+				
+	}
 
 </script>
 </head>
@@ -114,7 +137,13 @@ function switchPage(divId, page) {
 			<div id="complete" class="pagination" style="margin-bottom: 30px;"></div>
 			</div>
 			<!-- my comment -->
-			<div style="width:100%;height:10%;background-color: #70658A;border-radius: 5px;margin-bottom: 3px;"></div>
+			<div style="width:100%;height:20%;background-color: #70658A;border-radius: 5px;margin-bottom: 3px;">
+	
+				<textarea id="mycomment" style="font-weight:bold;width:100%;height:70%;"></textarea>
+				
+				<input type="button" onclick="javascript:submit();" value="Confirm" style="margin-left:85%;" />
+					
+			</div>
 
 		</div>
 		

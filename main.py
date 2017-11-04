@@ -110,7 +110,7 @@ def Lcomment():
     #print(postid)
     posts=post.Post(user)
     post_datas=posts.getPostsByPostid(postid)
-    postJson=[post_datas[0][0],post_datas[0][1]]
+    postJson=[post_datas[0][0],post_datas[0][1],postid]
 
     comments=comment.Comment(user)
     comment_datas=comments.getCommentsByPostid(postid)
@@ -122,6 +122,7 @@ def Lcomment():
                 }
         comment_data.append(datalist)
     commentJson=json.dumps(comment_data)
+    print(len(comment_data))
     
     return ""
     #print("okkkkkkkk")
@@ -130,9 +131,42 @@ def Lcomment():
 def commentWeb():
     global postJson,commentJson
     return render_template('comment.html',user=user,username=postJson[0],\
-            userpost=postJson[1],commentjson=commentJson)
+            userpost=postJson[1],postid=postJson[2],commentjson=commentJson)
     
     #return render_template('comment.html',user=user)
+
+
+newcommentJson=None;
+#7.submit comment
+@app.route("/SubComment",methods=["POST","GET"])
+def SubComment():
+    data=json.loads(request.form.get('data'))
+    postid=int(data["postid"])
+    mycomment=data["comment"]
+    #print(postid)
+    #print(mycomment)
+    userid=user.getUserID()
+    comments=comment.Comment(user)
+    result=comments.insertData(mycomment,userid,postid)
+
+    global newcommentJson
+    comment_datas=comments.getCommentsByPostid(postid)
+    comment_data=[];
+    for item in comment_datas:
+        datalist={
+                'username':item[0],
+                'comment':item[1]
+                }
+        comment_data.append(datalist)
+    newcommentJson=json.dumps(comment_data)
+    print(len(comment_data))
+    return ""
+
+@app.route("/newcommentWeb",methods=["POST","GET"])
+def newcommentWeb():
+    global postJson,newcommentJson
+    return render_template('comment.html',user=user,username=postJson[0],\
+            userpost=postJson[1],postid=postJson[2],commentjson=newcommentJson)
 
 
 if __name__=="__main__":
