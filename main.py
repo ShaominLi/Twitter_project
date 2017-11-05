@@ -169,5 +169,22 @@ def newcommentWeb():
             userpost=postJson[1],postid=postJson[2],commentjson=newcommentJson)
 
 
+#7.send blogs
+@app.route("/SendBlogs",methods=["POST","GET"])
+def SendBlogs():
+    return render_template("post.html",user=user);
+@app.route("/postdata",methods=["POST","GET"])
+def postdata():
+    if request.method == "POST":
+        blogs=request.form.get('myblog')
+        posts=post.Post(user)
+        #userid=int(1)
+        userid=user.getUserID()
+        ressult=posts.insertData(userid,blogs)
+        
+        return mainWindow();
+
+
+
 if __name__=="__main__":
     app.run(debug=True)

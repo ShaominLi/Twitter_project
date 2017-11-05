@@ -22,3 +22,10 @@ class Post:
         result=sql.queryDB(self.user.conn,sqlText)
         return result;
 
+    def insertData(self,userid,post):
+        sqlText="insert into post(userid,date,comment) \
+                values(%d,current_timestamp(0),'%s');"%(userid,post);
+        result=sql.insertDB(self.user.conn,sqlText)
+        return result;
+
+

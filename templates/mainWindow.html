@@ -11,7 +11,7 @@
 	function sign_out()
 	{
 		if(confirm("confirm sign out?"))
-			location.replace("/login")	
+			location.replace("/login");	
 				
 	}
 	function comment(obj)
@@ -113,6 +113,9 @@ function switchPage(divId, page) {
 	
 	//alert(page);
 }
+function send_blog(){
+	window.location.href="/SendBlogs";  
+} 
 </script>
 </head>
 <body>
@@ -163,7 +166,7 @@ function switchPage(divId, page) {
 		<a href="javascript:show();">{{user.name}}</a>
 		<ul style="display:none;" id="menu">
 	        <li ><a href="javascript:sign_out();">Sign out</a></li>
-		<li ><a href="#">Send Blog</a></li>
+		<li ><a href="javascript:send_blog();">Send Blog</a></li>
 	    	<li ><a href="#">Information</a></li>
 	  	</ul>
 	</div>
