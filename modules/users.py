@@ -1,28 +1,22 @@
 from modules import sql
 
 class Users:
-    def __init__(self,name=None,password=None,birthday=None,email=None,country=None):
+    def __init__(self,conn=None,name=None,password=None,email=None,country=None):
         self.name=name
         self.password=password
-        self.birthday=birthday
         self.email=email
         self.country=country
         self.inscription_date=None
-        self.picture=None
-        try:
-            self.conn=sql.connectDB("test","lishaomin","19931004")
-        except:
-            pass 
+        self.picture=None 
+        self.conn=conn
 
     def clean(self):
         self.name=None;
         self.password=None;
-        self.birthday=None;
         self.email=None;
         self.count=None;
         self.inscription_date=None;
         self.picture=None;
-        sql.closeDB(self.conn)
 
     def userLogin(self):
 
@@ -39,9 +33,9 @@ class Users:
 
     def userApply(self):
         t_sql_insert="insert into \
-                users(name,password,birthday,email,country,inscription_date,picture) \
-                values('{name}','{psw}','{birthday}','{email}','{country}',current_timestamp(0),'{picture}');"
-        sql_insert=t_sql_insert.format(name=self.name,psw=self.password,birthday=self.birthday,\
+                users(name,password,email,country,inscription_date,picture) \
+                values('{name}','{psw}','{email}','{country}',current_timestamp(0),'{picture}');"
+        sql_insert=t_sql_insert.format(name=self.name,psw=self.password,\
                 email=self.email,country=self.country,picture=None)
 
         sqlName="select count(*) from users where name='%s';"%(self.name)

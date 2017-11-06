@@ -66,6 +66,7 @@ function go() {
     PagingManage($('#complete'),pagenum, 5, 1);
 };
 function switchPage(divId, page) {
+	//PagingManage($('#complete'),pagenum, 5, page);
     	var str="";
 	$("#comments").html(str)
 	
@@ -79,7 +80,7 @@ function switchPage(divId, page) {
 
 function submit()
 	{	
-		if(confirm("confirm submit?")){
+		//if(confirm("confirm submit?")){
 			var postid={{postid}};
 			var comment=document.getElementById("mycomment").value;
 			//alert(comment);
@@ -95,12 +96,16 @@ function submit()
 				    window.location.href="/newcommentWeb"; 
 				}
 	    			});
-		}
+		//}
 		//location.replace("");
 				
 	}
 function send_blog(){
 	window.location.href="/SendBlogs";  
+} 
+
+function Return(){
+	window.location.href="/mainWindow";  
 } 
 </script>
 </head>
@@ -136,14 +141,15 @@ function send_blog(){
 			<!-- other comment -->	
 			<div>			
 			<div id="comments" style="color:#FFFFFF;font-weight:bold;width:100%;width:100%;height:auto;background-color: #70658A;border-radius: 5px;margin-bottom: 3px;"></div>
-			<div id="complete" class="pagination" style="margin-bottom: 30px;"></div>
+			<div id="complete" style="margin-bottom: 30px;">			</div>
 			</div>
 			<!-- my comment -->
 			<div style="width:100%;height:20%;background-color: #70658A;border-radius: 5px;margin-bottom: 3px;">
 	
 				<textarea id="mycomment" style="font-weight:bold;width:100%;height:70%;"></textarea>
 				
-				<input type="button" onclick="javascript:submit();" value="Confirm" style="margin-left:85%;" />
+				<div style="float:left; margin-left:75%;"><input type="button" onclick="javascript:Return();" value="Return"  /></div>
+				<div style="float:left;"><input type="button" onclick="javascript:submit();" value="Confirm"  /></div>
 					
 			</div>
 

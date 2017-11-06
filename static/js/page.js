@@ -11,7 +11,7 @@ function PagingManage(obj, pageCount, pageSize, currentPage) {
         var pagesize = pageSize;//单页数量  
         var currentpage = currentPage;//当前页面  
         var pageNum;//分页总数  
-        var showPageNum = 6;//显示多少个页码  
+        var showPageNum = 10;//显示多少个页码  
   
         var pagehtml = "<div style='float:right;'>";  
         var divId = "" + obj.attr('id');  
@@ -30,7 +30,7 @@ function PagingManage(obj, pageCount, pageSize, currentPage) {
         if (pageNum <= 1) {  
             pagehtml = "";  
         }  
-  
+  /*
         //大于一页内容  
         if (pageNum > 1) {  
 		var repage=currentpage-1;
@@ -39,7 +39,7 @@ function PagingManage(obj, pageCount, pageSize, currentPage) {
             //if (currentpage > 1) {  
                 pagehtml += '<li style="float:left;list-style:none;"><a href="javascript:void(0);" onclick="switchPage(\'' + divId + '\',' + repage + ')">上一页|</a></li>';  
            // }  
-  
+  */
             var startPage = 1;  
             //计算页码开始位置  
             if (showPageNum > pageNum) {//如果要显示的页码大于总的页码数  
@@ -68,17 +68,18 @@ function PagingManage(obj, pageCount, pageSize, currentPage) {
                 }  
   
                 if (i == currentpage) {  
-                    pagehtml += '<li class="active" style="float:left;list-style:none;"><a href="javascript:void(0);" onclick="switchPage(\'' + divId + '\',' + i + ')">' + i+' | ' + '</a></li>';  
+                    pagehtml += '<li style="float:left;list-style:none;"><a href="javascript:void(0);" onclick="switchPage(\'' + divId + '\',' + i + ')">' + i+' | ' + '</a></li>';  
                 } else {  
                     pagehtml += '<li style="float:left;list-style:none;"><a href="javascript:void(0);" onclick="switchPage(\'' + divId + '\',' + i + ')">' + i +' | '+ '</a></li>';  
                 }  
             }  
   
-  
+  /*
             if (currentpage < pageNum) {  
-                pagehtml +='<li style="float:left;list-style:none;"><a href="javascript:void(0);" onclick="switchPage(\'' + divId + '\',' + (currentpage + 1) + ')">下一页</a></li>';  
+		currentpage=currentpage+1;
+                pagehtml +='<li style="float:left;list-style:none;"><a href="javascript:void(0);" onclick="switchPage(\'' + divId + '\',' + (currentpage) + ')">下一页</a></li>';  
             }  
-        }  
+        }  */
 	pagehtml+="</div>"
         obj.html(pagehtml);  
     }

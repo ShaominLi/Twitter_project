@@ -1,11 +1,13 @@
 from flask import Flask,session,redirect,url_for,request,render_template
-from modules import users,post,comment,data
+from modules import users,post,comment,sql
 import json
 
 app=Flask(__name__)
 
-@app.route("/")
+conn=sql.connectDB("test","lishaomin","19931004");
+user=None;
 
+@app.route("/")
 
 #1.login web
 @app.route("/login")
@@ -14,16 +16,14 @@ def login():
 
 @app.route("/sign_out")
 def sign_out():
-    global user
-    user.clean()
+    global conn
+    sql.closeDB(conn)
     return ;
 
 #2.aplly account
 @app.route("/apply")
 def apply():
     return render_template('sign-up.html')
-
-user=None;
 
 #3.check UserName and PassWord
 @app.route("/check",methods=["POST","GET"])
@@ -34,10 +34,9 @@ def check():
        
         #print(UserName)
         #print(PassWord)
-        
-        global user
 
-        user=users.Users(UserName,PassWord)
+        global user,conn
+        user=users.Users(conn,UserName,PassWord)
         result=user.userLogin()
         if result == True:
             return """<script>location.replace("/mainWindow");</script>"""
@@ -57,12 +56,11 @@ def createUser():
         userName=request.args.get('name')
         userPsw=request.args.get('password')
         userEmail=request.args.get('email')
-        userBirthday=request.args.get('birthday')
         userCountry=request.args.get('country')
 
         #print(userName)
-        global user
-        user=users.Users(userName,userPsw,userBirthday,userEmail,userCountry)
+        global conn,user
+        user=users.Users(conn,userName,userPsw,userEmail,userCountry)
         result=user.userApply()
         if result == True:
             return """<script>alert('create new account successful');location.replace("/mainWindow");</script>"""
@@ -76,9 +74,8 @@ def createUser():
 #5.main window
 @app.route("/mainWindow",methods=["POST","GET"])
 def mainWindow():
-    global user
-    
-    posts=post.Post(user)
+    global conn,user
+    posts=post.Post(conn)
     allBlogs=posts.getAllPosts()
 
     datas=[];
@@ -104,15 +101,15 @@ commentJson=None
 #6.look through comments
 @app.route("/Lcomment",methods=["POST","GET"])
 def Lcomment():
-    global postJson,commentJson
+    global postJson,commentJson,conn
     data=json.loads(request.form.get('data'))
     postid=int(data["postid"])
     #print(postid)
-    posts=post.Post(user)
+    posts=post.Post(conn)
     post_datas=posts.getPostsByPostid(postid)
     postJson=[post_datas[0][0],post_datas[0][1],postid]
 
-    comments=comment.Comment(user)
+    comments=comment.Comment(conn)
     comment_datas=comments.getCommentsByPostid(postid)
     comment_data=[];
     for item in comment_datas:
@@ -129,7 +126,7 @@ def Lcomment():
 
 @app.route("/commentWeb",methods=["POST","GET"])
 def commentWeb():
-    global postJson,commentJson
+    global postJson,commentJson,user
     return render_template('comment.html',user=user,username=postJson[0],\
             userpost=postJson[1],postid=postJson[2],commentjson=commentJson)
     
@@ -145,8 +142,9 @@ def SubComment():
     mycomment=data["comment"]
     #print(postid)
     #print(mycomment)
+    global conn,user
     userid=user.getUserID()
-    comments=comment.Comment(user)
+    comments=comment.Comment(conn)
     result=comments.insertData(mycomment,userid,postid)
 
     global newcommentJson
@@ -164,7 +162,7 @@ def SubComment():
 
 @app.route("/newcommentWeb",methods=["POST","GET"])
 def newcommentWeb():
-    global postJson,newcommentJson
+    global postJson,newcommentJson,user
     return render_template('comment.html',user=user,username=postJson[0],\
             userpost=postJson[1],postid=postJson[2],commentjson=newcommentJson)
 
@@ -175,9 +173,10 @@ def SendBlogs():
     return render_template("post.html",user=user);
 @app.route("/postdata",methods=["POST","GET"])
 def postdata():
+    global conn,user
     if request.method == "POST":
         blogs=request.form.get('myblog')
-        posts=post.Post(user)
+        posts=post.Post(conn)
         #userid=int(1)
         userid=user.getUserID()
         ressult=posts.insertData(userid,blogs)
