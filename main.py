@@ -3,9 +3,10 @@ from modules import users,post,comment,sql
 import json
 
 app=Flask(__name__)
+app.secret_key='\xf1\x92Y\xdf\x8ejY\x04\x96\xb4V\x88\xfb\xfc\xb5\x18F\xa3\xee\xb9\xb9t\x01\xf0\x96'
 
 conn=sql.connectDB("test","lishaomin","19931004");
-user=None;
+#user=None;
 
 @app.route("/")
 
@@ -18,6 +19,10 @@ def login():
 def sign_out():
     global conn
     sql.closeDB(conn)
+    session.pop("username",None)
+    session.pop("userid",None)
+    session.pop("posts",None)
+    session.pop("comments",None)
     return ;
 
 #2.aplly account
@@ -35,10 +40,13 @@ def check():
         #print(UserName)
         #print(PassWord)
 
-        global user,conn
+       #global user,conn
         user=users.Users(conn,UserName,PassWord)
         result=user.userLogin()
         if result == True:
+            userid=user.getUserID()
+            session["username"]=user.name
+            session["userid"]=userid
             return """<script>location.replace("/mainWindow");</script>"""
         else:
             user.clean()
@@ -59,10 +67,14 @@ def createUser():
         userCountry=request.args.get('country')
 
         #print(userName)
-        global conn,user
+        global conn
         user=users.Users(conn,userName,userPsw,userEmail,userCountry)
         result=user.userApply()
         if result == True:
+            session["username"]=userName
+            userid=user.getUserID()
+            session["userid"]=userid
+
             return """<script>alert('create new account successful');location.replace("/mainWindow");</script>"""
         else:
             user.clean()
@@ -74,7 +86,7 @@ def createUser():
 #5.main window
 @app.route("/mainWindow",methods=["POST","GET"])
 def mainWindow():
-    global conn,user
+    global conn
     posts=post.Post(conn)
     allBlogs=posts.getAllPosts()
 
@@ -91,17 +103,14 @@ def mainWindow():
     #test=json.loads(dataJson)
     #test="%s"%(dataJson)
     #print(test)
-    return render_template('mainWindow.html',user=user,json=dataJson)
+    username=session.get("username")
+    return render_template('mainWindow.html',username=username,json=dataJson)
 
 
-
-
-postJson=None
-commentJson=None
 #6.look through comments
 @app.route("/Lcomment",methods=["POST","GET"])
 def Lcomment():
-    global postJson,commentJson,conn
+    global conn
     data=json.loads(request.form.get('data'))
     postid=int(data["postid"])
     #print(postid)
@@ -119,21 +128,25 @@ def Lcomment():
                 }
         comment_data.append(datalist)
     commentJson=json.dumps(comment_data)
-    print(len(comment_data))
-    
+    #print(len(comment_data))
+    session["posts"]=postJson
+    session["comments"]=commentJson
+
     return ""
     #print("okkkkkkkk")
 
 @app.route("/commentWeb",methods=["POST","GET"])
 def commentWeb():
-    global postJson,commentJson,user
-    return render_template('comment.html',user=user,username=postJson[0],\
+    username=session.get("username")
+    postJson=session.get("posts")
+    commentJson=session.get("comments")
+
+    return render_template('comment.html',Musername=username,username=postJson[0],\
             userpost=postJson[1],postid=postJson[2],commentjson=commentJson)
     
     #return render_template('comment.html',user=user)
 
 
-newcommentJson=None;
 #7.submit comment
 @app.route("/SubComment",methods=["POST","GET"])
 def SubComment():
@@ -142,12 +155,11 @@ def SubComment():
     mycomment=data["comment"]
     #print(postid)
     #print(mycomment)
-    global conn,user
-    userid=user.getUserID()
+    global conn
+    userid=session.get("userid")
     comments=comment.Comment(conn)
     result=comments.insertData(mycomment,userid,postid)
 
-    global newcommentJson
     comment_datas=comments.getCommentsByPostid(postid)
     comment_data=[];
     for item in comment_datas:
@@ -157,28 +169,32 @@ def SubComment():
                 }
         comment_data.append(datalist)
     newcommentJson=json.dumps(comment_data)
+    session["comments"]=newcommentJson
     print(len(comment_data))
     return ""
 
 @app.route("/newcommentWeb",methods=["POST","GET"])
 def newcommentWeb():
-    global postJson,newcommentJson,user
-    return render_template('comment.html',user=user,username=postJson[0],\
+    postJson=session.get("posts")
+    username=session.get("username")
+    newcommentJson=session.get("comments")
+    return render_template('comment.html',Musername=username,username=postJson[0],\
             userpost=postJson[1],postid=postJson[2],commentjson=newcommentJson)
 
 
 #7.send blogs
 @app.route("/SendBlogs",methods=["POST","GET"])
 def SendBlogs():
-    return render_template("post.html",user=user);
+    username=session.get("username")
+    return render_template("post.html",username=username);
 @app.route("/postdata",methods=["POST","GET"])
 def postdata():
-    global conn,user
+    global conn
     if request.method == "POST":
         blogs=request.form.get('myblog')
         posts=post.Post(conn)
         #userid=int(1)
-        userid=user.getUserID()
+        userid=session.get("userid")
         ressult=posts.insertData(userid,blogs)
         
         return mainWindow();
