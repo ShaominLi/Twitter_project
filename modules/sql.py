@@ -24,17 +24,27 @@ def queryDB(conn,sql_select):
 
 #插入数据
 def insertDB(conn,sql_insert):
-    '''
-    sql_insert1="insert into users(name,password,birthday,email,country,inscription_date,picture) \
-            values('{name}','{psw}','{birthday}','{email}','{country}','{ins_date}','{picture}');"
-    sql_insert2="insert into users(name,password,email,country,inscription_date,picture) \
-            values('{name}','{psw}','{email}','{country}',current_timestamp(0),'{picture}');"
-    sql_insert=sql_insert2.format(name="test7",psw="123456",email="2222@test.com",country="China",picture="qwwqdewrweq")
-    '''
     cur=conn.cursor()
     result=cur.execute(sql_insert)
     conn.commit()
     print("insert data successfull")
+    return result
+
+#delete data
+def deleteDB(conn,sql_delete):
+    cur=conn.cursor()
+    result=cur.execute(sql_delete)
+    conn.commit()
+    print("delete data successfull")
+    return result
+
+
+#update data
+def updateDB(conn,sql_update):
+    cur=conn.cursor()
+    result=cur.execute(sql_update)
+    conn.commit()
+    print("update data successfull")
     return result
 
 

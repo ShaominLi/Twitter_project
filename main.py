@@ -199,6 +199,24 @@ def postdata():
         
         return mainWindow();
 
+#8.information
+@app.route("/Information",methods=["POST","GET"])
+def Information():
+    global conn
+    username=session.get("username")
+    userid=session.get("userid")
+    user=users.Users(conn)
+    informations=user.getAllInformation(userid)
+    userpassword=informations[0][1]
+    useremail=informations[0][2]
+    usercountry=informations[0][3]
+    return render_template('information.html',username=username,\
+            password=userpassword,email=useremail,country=usercountry)
+
+
+
+
+
 
 
 if __name__=="__main__":

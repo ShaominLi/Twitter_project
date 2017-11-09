@@ -53,11 +53,20 @@ class Users:
         userid=sql.queryDB(self.conn,sqlName)
         return userid[0][0];
 
+    def getAllPosts(self):
+        sqlText="select comment from post where userid=%d order by date;"
+        allposts=sql.queryDB(self.conn,sqlText)
+        return allposts;
 
 
+    def getAllComments(self):
+        sqlText="select comment from comments where userid=%d order by date;"
+        allposts=sql.queryDB(self.conn,sqlText)
+        return allposts;
 
-
-
-
+    def getAllInformation(self,userid):
+        sqlText="select name,password,email,country from users where userid=%d;"%(userid)
+        information=sql.queryDB(self.conn,sqlText)
+        return information;
 
 

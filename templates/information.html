@@ -21,10 +21,15 @@
 	    }
 	}
 	
-	
-function send_blog(){
-	window.location.href="/SendBlogs";  
-} 
+	function send_blog(){
+		window.location.href="/SendBlogs";  
+	} 
+	function information(){
+		window.location.href="/Information";  
+	} 
+
+
+
 </script>
 </head>
 <body>
@@ -38,7 +43,7 @@ function send_blog(){
 <!-- Mainbar-Starts-Here -->
 		<div class="main-bar" style="height:30px;">
 			<div class="comment">
-				<h3>Send Blogs</h3>
+				<h3>Informations</h3>
 			</div>
 		</div>
 		
@@ -48,15 +53,19 @@ function send_blog(){
 			<!-- user post -->
 			
 			<!-- my comment -->
-			<div style="width:100%;height:20%;background-color: #70658A;border-radius: 5px;margin-bottom: 3px;">
-				<form action="/postdata" method="post">
-				<textarea name="myblog" style="font-weight:bold;width:100%;height:70%;"></textarea>
-				
-				<input type="submit"  value="Confirm" style="margin-left:85%;" />
+			<div style="width:100%;height:auto;background-color: #70658A;border-radius: 5px;margin-bottom: 5px;">
+				<form action="#" method="post">
+				<table style="margin-left: 30%; font-size:20px;">
+					<tr><td>Name:</td><td><input type="text" value="{{username}}"></td></tr>
+					<tr><td>Email:</td><td><input type="text" value="{{email}}"></td></tr>
+					<tr><td>Password:</td><td><input type="text" value="{{password}}"></td></tr>
+					<tr><td>Country:</td><td><input type="text" value="{{country}}"></td></tr>
+				</table>				
+				<input type="submit"  value="Confirm" style="margin-left:40%;margin-top:5px;" />
 				</form>
 					
 			</div>
-
+			
 		</div>
 		
 		
@@ -74,7 +83,7 @@ function send_blog(){
 		<ul style="display:none;" id="menu">
 	        <li ><a href="javascript:sign_out();">Sign out</a></li>
 		<li ><a href="javascript:send_blog();">Send Blog</a></li>
-	    	<li ><a href="javascript:information();">Information</a></li>
+	    	<li ><a href="#">Information</a></li>
 	  	</ul>
 	</div>
 
