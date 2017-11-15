@@ -20,10 +20,16 @@
 		display = true;
 	    }
 	}
+	function deletePost(obj)
+	{
+		var commentid=obj.id;
+		alert(commentid);
+
+	}
 	function showdata(index,end){
 		var t = document.createElement('table');
 		t.style="border:2px; width:100%;table-layout:fixed;text-align: center;";
-		
+		var myname="{{Musername}}";
 		for (var i=index;i<end;i++)
 		{
 			var r = t.insertRow();
@@ -38,6 +44,11 @@
 			input.style="width:100%;font-size: 12px;font-weight: bold;vertical-align:middle;";
 			input.disabled= "true ";
 			post.appendChild(input);
+			if(myname==obj[i].username){
+				var del = r.insertCell();
+				del.innerHTML = "<a style='color:#3333FF;font-size:13px;' href='javascript:void(0);' onclick='deletePost(this)' id='"+obj[i].commentid+"' >delete</a>";
+				del.style="width:10%;vertical-align:middle;";
+			}
 		     
 		}
 		document.getElementById('comments').appendChild(t);

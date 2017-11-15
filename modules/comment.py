@@ -11,7 +11,7 @@ class Comment:
         return result;
     
     def getCommentsByPostid(self,postid):
-        sqlText="select name,comment from users,comments where \
+        sqlText="select commentid,name,comment from users,comments where \
                 users.userid=comments.userid and postid=%d order by date desc;"%(postid)
         result=sql.queryDB(self.conn,sqlText)
         return result;

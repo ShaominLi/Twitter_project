@@ -123,8 +123,9 @@ def Lcomment():
     comment_data=[];
     for item in comment_datas:
         datalist={
-                'username':item[0],
-                'comment':item[1]
+                'commentid':item[0],
+                'username':item[1],
+                'comment':item[2]
                 }
         comment_data.append(datalist)
     commentJson=json.dumps(comment_data)
@@ -164,8 +165,9 @@ def SubComment():
     comment_data=[];
     for item in comment_datas:
         datalist={
-                'username':item[0],
-                'comment':item[1]
+                'commentid':item[0],
+                'username':item[1],
+                'comment':item[2]
                 }
         comment_data.append(datalist)
     newcommentJson=json.dumps(comment_data)

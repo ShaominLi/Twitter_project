@@ -14,6 +14,12 @@
 			location.replace("/login");	
 				
 	}
+	function deletePost(obj)
+	{
+		var postid=obj.id;
+		alert(postid);
+
+	}
 	function comment(obj)
 	{
 		var data = {
@@ -46,7 +52,7 @@
 	function showdata(index,end){
 		var t = document.createElement('table');
 		t.style="border:2px; width:100%;table-layout:fixed;text-align: center;";
-		
+		var myname="{{username}}";
 		for (var i=index;i<end;i++)
 		{
 			var r = t.insertRow();
@@ -68,6 +74,11 @@
 			var like = r.insertCell();
 			like.innerHTML = "fffff";
 			like.style="width:10%;vertical-align:middle;";
+			if(myname==obj[i].username){
+				var del = r.insertCell();
+				del.innerHTML = "<a style='color:#3333FF;font-size:13px;' href='javascript:void(0);' onclick='deletePost(this)' id='"+obj[i].postid+"' >delete</a>";
+				del.style="width:10%;vertical-align:middle;";
+			}
 		     
 		}
 		document.getElementById('datas').appendChild(t);
