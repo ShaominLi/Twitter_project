@@ -30,7 +30,6 @@ class Post:
 
 
     def deletePost(self,postid):
-        sqlText="delete from post_like where post_like.commentid=%d"%(postid)
-        sql.deleteDB(self.conn,sqlText)
         sqlText="delete from post where post.postid=%d"%(postid)
-        sql.deleteDB(self.conn,sqlText)
+        result=sql.deleteDB(self.conn,sqlText)
+        return result;

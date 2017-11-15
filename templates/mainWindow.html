@@ -16,8 +16,19 @@
 	}
 	function deletePost(obj)
 	{
-		var postid=obj.id;
-		alert(postid);
+		//var postid=obj.id;
+		var data = {
+         	data: JSON.stringify({"postid": obj.id})
+	   	}
+		     $.ajax({
+			url:"/deletePosts",
+			type: 'POST',
+			data: data,
+			success: function (msg) {
+			    //location.replace("/commentWeb");
+				window.location.href="/mainWindow";  
+			}
+    			});
 
 	}
 	function comment(obj)
@@ -60,7 +71,7 @@
 			name.innerHTML = obj[i].username;
 			name.style="width:15%;vertical-align:middle;";
 			var post = r.insertCell();
-			post.style="width:60%;table-layout:fixed;table-layout:fixed;text-align: center;";
+			post.style="width:50%;table-layout:fixed;table-layout:fixed;text-align: center;";
 			var input = document.createElement('textarea');
 			//input.setAttribute('type', 'text');
 			input.value = obj[i].post;

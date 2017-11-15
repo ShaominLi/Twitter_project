@@ -215,6 +215,17 @@ def Information():
     return render_template('information.html',username=username,\
             password=userpassword,email=useremail,country=usercountry)
 
+#9.delete blogs
+@app.route("/deletePosts",methods=["POST","GET"])
+def deletePosts():
+    global conn
+    data=json.loads(request.form.get('data'))
+    postid=int(data["postid"])
+    #print(postid)
+    posts=post.Post(conn)
+    posts.deletePost(postid)
+    return mainWindow();
+
 
 
 
