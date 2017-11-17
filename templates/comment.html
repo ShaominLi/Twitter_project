@@ -20,10 +20,20 @@
 		display = true;
 	    }
 	}
-	function deletePost(obj)
+	function deleteComment(obj)
 	{
-		var commentid=obj.id;
-		alert(commentid);
+		//var postid=obj.id;
+		var data = {
+         	data: JSON.stringify({"commentid": obj.id})
+	   	}
+		     $.ajax({
+			url:"/deleteComments",
+			type: 'POST',
+			data: data,
+			success: function (msg) {
+				window.location.href="/newcommentWeb";  
+			}
+    			});
 
 	}
 	function showdata(index,end){
@@ -46,7 +56,7 @@
 			post.appendChild(input);
 			if(myname==obj[i].username){
 				var del = r.insertCell();
-				del.innerHTML = "<a style='color:#3333FF;font-size:13px;' href='javascript:void(0);' onclick='deletePost(this)' id='"+obj[i].commentid+"' >delete</a>";
+				del.innerHTML = "<a style='color:#3333FF;font-size:13px;' href='javascript:void(0);' onclick='deleteComment(this)' id='"+obj[i].commentid+"' >delete</a>";
 				del.style="width:10%;vertical-align:middle;";
 			}
 		     

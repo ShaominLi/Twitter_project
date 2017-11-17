@@ -26,10 +26,9 @@ class Comment:
         result=sql.insertDB(self.conn,sqlText)
         return result;
 
-    def deleteComment(self,Commentid):
-        sqlText="delete from comment_like where comment_like.commentid=%d"%(commentid)
-        sql.deleteDB(self.conn,sqlText)
-        sqlText="delete from comments where comments.commentid=%d"%(commentid)
-        sql.deleteDB(self.conn,sqlText)
+    def deleteComment(self,commentid):
+        sqlText="delete from comments where commentid=%d"%(commentid)
+        result=sql.deleteDB(self.conn,sqlText)
+        return result;
 
 

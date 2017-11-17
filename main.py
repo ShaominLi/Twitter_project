@@ -227,6 +227,28 @@ def deletePosts():
     return mainWindow();
 
 
+#10.delete comments
+@app.route("/deleteComments",methods=["POST","GET"])
+def deleteComments():
+    global conn
+    data=json.loads(request.form.get('data'))
+    commentid=int(data["commentid"])
+    #print(postid)
+    comments=comment.Comment(conn)
+    comments.deleteComment(commentid)
+    postid=session.get("posts")[2]
+    comment_datas=comments.getCommentsByPostid(postid)
+    comment_data=[];
+    for item in comment_datas:
+        datalist={
+                'commentid':item[0],
+                'username':item[1],
+                'comment':item[2]
+                }
+        comment_data.append(datalist)
+    newcommentJson=json.dumps(comment_data)
+    session["comments"]=newcommentJson
+    return "";
 
 
 
