@@ -5,14 +5,35 @@ function register() {
 	if (!checkpass()) {
 		return false;
 	} 
+	if (!checkrpass()) {
+		return false;
+	} 
 	if(!checkemail()){
 		return false;
 	} 
-	if(!checkbirthday()){
-		return false;
-	}
+	//if(!checkbirthday()){
+		//return false;
+	//}
 	return true;
 }
+
+function modify(){
+	if(!checkname()){
+			return false;	
+		}
+	if (!checkpass()) {
+			return false;
+		} 
+		
+	if(!checkemail()){
+			return false;
+		} 
+		
+	return true;
+
+
+}
+
 
 function checkname()    
 {
@@ -49,7 +70,7 @@ function checkpass(){
 	}else{
     	pts.innerHTML ="ok";
     	pts.style.color="green";
-		return checkrpass();
+		return true;
 	}
 }
 function checkrpass(){

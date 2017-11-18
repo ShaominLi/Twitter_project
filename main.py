@@ -212,8 +212,32 @@ def Information():
     userpassword=informations[0][1]
     useremail=informations[0][2]
     usercountry=informations[0][3]
+
     return render_template('information.html',username=username,\
             password=userpassword,email=useremail,country=usercountry)
+
+@app.route("/ModifyInfo",methods=["POST","GET"])
+def ModifyInfo():
+    global conn
+    if request.method == "GET":
+        userName=request.args.get('name')
+        userPsw=request.args.get('password')
+        userEmail=request.args.get('email')
+        userCountry=request.args.get('country')
+
+        user=users.Users(conn,userName,userPsw,userEmail,userCountry)
+        userid=session.get("userid")
+        result=user.modifyUserInfo(userid);
+        if result == True:
+            session["username"]=userName
+            return """<script>alert('submit successful');location.replace("/Information");</script>"""
+        else:
+            user.clean()
+            return """<script>alert('name exist');location.replace("/Information");</script>"""
+
+    else:
+        return """<script>alert('create new account error')</script>"""
+
 
 #9.delete blogs
 @app.route("/deletePosts",methods=["POST","GET"])

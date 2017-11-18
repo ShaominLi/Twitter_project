@@ -6,7 +6,7 @@
 	<link href="{{url_for('static',filename='css/Mainstyle.css')}}" rel="stylesheet" type="text/css"/>
 <!-- //Custom-Theme-Files -->
 	<script src="{{url_for('static',filename = 'js/jquery-1.11.1.min.js')}}"></script>
-	
+	<script src="{{url_for('static',filename = 'js/signUp.js')}}"></script>
 	<script type="text/javascript" src="{{url_for('static',filename = 'js/page.js')}}"></script>
 <script>
 	var display = false;
@@ -54,12 +54,12 @@
 			
 			<!-- my comment -->
 			<div style="width:100%;height:auto;background-color: #70658A;border-radius: 5px;margin-bottom: 5px;">
-				<form action="#" method="post">
-				<table style="margin-left: 30%; font-size:20px;">
-					<tr><td>Name:</td><td><input type="text" value="{{username}}"></td></tr>
-					<tr><td>Email:</td><td><input type="text" value="{{email}}"></td></tr>
-					<tr><td>Password:</td><td><input type="text" value="{{password}}"></td></tr>
-					<tr><td>Country:</td><td><input type="text" value="{{country}}"></td></tr>
+				<form action="ModifyInfo" method="get" onsubmit="return modify();">
+				<table style="margin-left: 20%; font-size:20px;">
+					<tr><td>Name:</td><td><input type="text" value="{{username}}" name="name" id="uname"></td><td><SPAN id="nametext"></SPAN></td></tr>
+					<tr><td>Email:</td><td><input type="text" value="{{email}}" name="email" id="uemail"></td><td><SPAN id="emailtext"></SPAN></td</tr>
+					<tr><td>Password:</td><td><input type="text" value="{{password}}" name="password" id="upass"></td><td><SPAN id="pswtext"></SPAN></td</tr>
+					<tr><td>Country:</td><td><input type="text" value="{{country}}" name="countrys"></td></tr>
 				</table>				
 				<input type="submit"  value="Confirm" style="margin-left:40%;margin-top:5px;" />
 				</form>
