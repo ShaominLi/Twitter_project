@@ -227,7 +227,12 @@ def ModifyInfo():
 
         user=users.Users(conn,userName,userPsw,userEmail,userCountry)
         userid=session.get("userid")
-        result=user.modifyUserInfo(userid);
+        temp=session.get("username")
+        if(temp != userName):
+            flag=1
+        else:
+            flag=0
+        result=user.modifyUserInfo(userid,flag);
         if result == True:
             session["username"]=userName
             return """<script>alert('submit successful');location.replace("/Information");</script>"""

@@ -70,18 +70,20 @@ class Users:
         return information;
 
 
-    def modifyUserInfo(self,userid):
+    def modifyUserInfo(self,userid,flag):
         sqlText="update users \
                 set name='%s',password='%s',email='%s',country='%s' \
                 where userid='%d';"%(self.name,self.password,self.email,self.country,userid)
-        
-        sqlName="select count(*) from users where name='%s';"%(self.name)
-        checkName=sql.queryDB(self.conn,sqlName)
-        #no name
-        if checkName[0][0] == 0:
-            sql.updateDB(self.conn,sqlText)
-            return True
+        if(flag==1): 
+            sqlName="select count(*) from users where name='%s';"%(self.name)
+            checkName=sql.queryDB(self.conn,sqlName)
+            #no name
+            if checkName[0][0] == 0:
+                sql.updateDB(self.conn,sqlText)
+                return True
+            else:
+                return False
         else:
-            return False
-    
+            sql.updateDB(self.conn,sqlText)
+            return True;
 
