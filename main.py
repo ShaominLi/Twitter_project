@@ -88,14 +88,17 @@ def createUser():
 def mainWindow():
     global conn
     posts=post.Post(conn)
-    allBlogs=posts.getAllPosts()
+    userid=session.get("userid")
+    allBlogs=posts.getAllPosts(userid)
 
     datas=[];
     for item in allBlogs:
         datalist={
                 'username':item[0],
                 'post':item[1],
-                'postid':item[2]
+                'postid':item[2],
+                'like':item[3],
+                'flag':item[4]
                 }
         datas.append(datalist)
     dataJson=json.dumps(datas)
@@ -278,6 +281,30 @@ def deleteComments():
     newcommentJson=json.dumps(comment_data)
     session["comments"]=newcommentJson
     return "";
+
+#11.like/dislike post
+@app.route("/likePost",methods=["POST","GET"])
+def likePost():
+    global conn
+    userid=session.get("userid")
+    data=json.loads(request.form.get('data'))
+    postid=int(data["postid"])
+    posts=post.Post(conn);
+    posts.likePost(postid,userid)
+    return ""
+
+@app.route("/dislikePost",methods=["POST","GET"])
+def dislikePost():
+    global conn
+    userid=session.get("userid")
+    data=json.loads(request.form.get('data'))
+    postid=int(data["postid"])
+    posts=post.Post(conn);
+    posts.dislikePost(postid,userid)
+    return ""
+
+
+
 
 
 
