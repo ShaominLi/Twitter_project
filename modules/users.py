@@ -7,7 +7,6 @@ class Users:
         self.email=email
         self.country=country
         self.inscription_date=None
-        self.picture=None 
         self.conn=conn
 
     def clean(self):
@@ -16,7 +15,6 @@ class Users:
         self.email=None;
         self.count=None;
         self.inscription_date=None;
-        self.picture=None;
 
     def userLogin(self):
 
@@ -33,10 +31,10 @@ class Users:
 
     def userApply(self):
         t_sql_insert="insert into \
-                users(name,password,email,country,inscription_date,picture) \
-                values('{name}','{psw}','{email}','{country}',current_timestamp(0),'{picture}');"
+                users(name,password,email,country,inscription_date) \
+                values('{name}','{psw}','{email}','{country}',current_timestamp(0));"
         sql_insert=t_sql_insert.format(name=self.name,psw=self.password,\
-                email=self.email,country=self.country,picture=None)
+                email=self.email,country=self.country)
 
         sqlName="select count(*) from users where name='%s';"%(self.name)
         checkName=sql.queryDB(self.conn,sqlName)
