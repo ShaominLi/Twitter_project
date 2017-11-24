@@ -36,6 +36,45 @@
     			});
 
 	}
+
+	function like(obj)
+	{
+		var likeid="like"+obj.id;
+		var likevalue=parseInt(document.getElementById(likeid).innerText);
+		
+		var data = {
+         	data: JSON.stringify({"commentid": obj.id})
+	   	}
+		
+		if(obj.text=="like"){
+			//obj.text= "dislike";
+
+			$.ajax({
+			url:"/likeComment",
+			type: 'POST',
+			data: data,
+			success: function (msg) {
+				obj.text= "dislike";
+				//like_value=true;  
+				document.getElementById(likeid).innerHTML=likevalue+1;
+			}
+    			});
+		}else{
+			//obj.text= "like";
+
+			$.ajax({
+			url:"/dislikeComment",
+			type: 'POST',
+			data: data,
+			success: function (msg) {
+				obj.text= "like";
+				//like_value=false;
+				document.getElementById(likeid).innerHTML=likevalue-1;
+			}
+    			});
+			
+		}
+	}
 	function showdata(index,end){
 		var t = document.createElement('table');
 		t.style="border:2px; width:100%;table-layout:fixed;text-align: center;";
@@ -54,6 +93,10 @@
 			input.style="width:100%;font-size: 12px;font-weight: bold;vertical-align:middle;";
 			input.disabled= "true ";
 			post.appendChild(input);
+			var like = r.insertCell();
+			var liketext=["like","dislike"];
+			like.innerHTML = "<a style='color:#000' href='javascript:void(0);' onclick='like(this)' id='"+obj[i].commentid+"' >"+liketext[parseInt(obj[i].flag)]+"</a><span style='color:#9F4D95;font-size:12px;margin-left:5px;' id='like"+obj[i].commentid+"'>"+obj[i].like+"</span>";
+			like.style="width:10%;vertical-align:middle;";
 			if(myname==obj[i].username){
 				var del = r.insertCell();
 				del.innerHTML = "<a style='color:#3333FF;font-size:13px;' href='javascript:void(0);' onclick='deleteComment(this)' id='"+obj[i].commentid+"' >delete</a>";

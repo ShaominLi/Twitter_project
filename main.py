@@ -120,15 +120,19 @@ def Lcomment():
     posts=post.Post(conn)
     post_datas=posts.getPostsByPostid(postid)
     postJson=[post_datas[0][0],post_datas[0][1],postid]
+    
+    userid=session.get("userid")
 
     comments=comment.Comment(conn)
-    comment_datas=comments.getCommentsByPostid(postid)
+    comment_datas=comments.getCommentsByPostid(postid,userid)
     comment_data=[];
     for item in comment_datas:
         datalist={
-                'commentid':item[0],
-                'username':item[1],
-                'comment':item[2]
+                'like':item[0],
+                'flag':item[1],
+                'commentid':item[2],
+                'username':item[3],
+                'comment':item[4]
                 }
         comment_data.append(datalist)
     commentJson=json.dumps(comment_data)
@@ -164,13 +168,15 @@ def SubComment():
     comments=comment.Comment(conn)
     result=comments.insertData(mycomment,userid,postid)
 
-    comment_datas=comments.getCommentsByPostid(postid)
+    comment_datas=comments.getCommentsByPostid(postid,userid)
     comment_data=[];
     for item in comment_datas:
         datalist={
-                'commentid':item[0],
-                'username':item[1],
-                'comment':item[2]
+                'like':item[0],
+                'flag':item[1],
+                'commentid':item[2],
+                'username':item[3],
+                'comment':item[4]
                 }
         comment_data.append(datalist)
     newcommentJson=json.dumps(comment_data)
@@ -303,6 +309,26 @@ def dislikePost():
     posts.dislikePost(postid,userid)
     return ""
 
+#12.like/dislike comment
+@app.route("/likeComment",methods=["POST","GET"])
+def likeComment():
+    global conn
+    userid=session.get("userid")
+    data=json.loads(request.form.get('data'))
+    commentid=int(data["commentid"])
+    comments=comment.Comment(conn);
+    comments.likeComments(commentid,userid)
+    return ""
+
+@app.route("/dislikeComment",methods=["POST","GET"])
+def dislikeComment():
+    global conn
+    userid=session.get("userid")
+    data=json.loads(request.form.get('data'))
+    commentid=int(data["commentid"])
+    comments=comment.Comment(conn);
+    comments.dislikeComments(commentid,userid)
+    return ""
 
 
 
