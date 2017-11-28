@@ -279,9 +279,11 @@ def deleteComments():
     comment_data=[];
     for item in comment_datas:
         datalist={
-                'commentid':item[0],
-                'username':item[1],
-                'comment':item[2]
+                'like':item[0],
+                'flag':item[1],
+                'commentid':item[2],
+                'username':item[3],
+                'comment':item[4]
                 }
         comment_data.append(datalist)
     newcommentJson=json.dumps(comment_data)
@@ -329,6 +331,71 @@ def dislikeComment():
     comments=comment.Comment(conn);
     comments.dislikeComments(commentid,userid)
     return ""
+
+#13.follow friends
+@app.route("/friends",methods=["POST","GET"])
+def friends():
+    global conn
+    username=session.get("username")
+    userid=session.get("userid")
+    user=users.Users(conn)
+    allUsers=user.getUsers(userid)
+    user_data=[];
+    for item in allUsers:
+        datalist={
+                'userid':item[0],
+                'username':item[1],
+                'country':item[2],
+                'follow':item[3]
+                }
+        user_data.append(datalist)
+    AllUsers=json.dumps(user_data)
+    return render_template('friends.html',Musername=username,users=AllUsers)
+
+@app.route("/followfriend",methods=["POST","GET"])
+def followfriend():
+    global conn
+    username=session.get("username")
+    userid=session.get("userid")
+    data=json.loads(request.form.get('data'))
+    friendid=int(data["userid"])
+    user=users.Users(conn)
+    user.followFriends(userid,friendid)
+    return ""
+
+
+@app.route("/cancelfollow",methods=["POST","GET"])
+def cancelfollow():
+    global conn
+    username=session.get("username")
+    userid=session.get("userid")
+    data=json.loads(request.form.get('data'))
+    friendid=int(data["userid"])
+    user=users.Users(conn)
+    user.cancelFollow(userid,friendid)
+    return ""
+
+@app.route("/searchUser",methods=["POST","GET"])
+def searchUser():
+    global conn
+    user=users.Users(conn)
+    data=json.loads(request.form.get('data'))
+    username=data["username"]
+    userid=session.get("userid")
+    allUsers=user.getUsersByName(userid,username)
+    for item in allUsers:
+        datalist={
+                'userid':item[0],
+                'username':item[1],
+                'country':item[2],
+                'follow':item[3]
+                }
+    if datalist != "":
+        AllUsers=json.dumps(datalist)
+        return AllUsers;
+    else:
+        return ""
+
 
 
 

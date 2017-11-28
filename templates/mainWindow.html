@@ -8,6 +8,10 @@
 	<script src="{{url_for('static',filename = 'js/jquery-1.11.1.min.js')}}"></script>
 	
 	<script type="text/javascript">
+	function follow()
+	{
+		window.location.href="/friends"; ;
+	}
 	function sign_out()
 	{
 		if(confirm("confirm sign out?"))
@@ -229,6 +233,7 @@ function send_blog(){
 	        <li ><a href="javascript:sign_out();">Sign out</a></li>
 		<li ><a href="javascript:send_blog();">Send Blog</a></li>
 	    	<li ><a href="javascript:information();">Information</a></li>
+		<li ><a href="javascript:follow();">Find Friends</a></li>
 	  	</ul>
 	</div>
 

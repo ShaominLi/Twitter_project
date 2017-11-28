@@ -29,6 +29,7 @@ class Users:
         else:
             return True
 
+
     def userApply(self):
         t_sql_insert="insert into \
                 users(name,password,email,country,inscription_date) \
@@ -84,4 +85,35 @@ class Users:
         else:
             sql.updateDB(self.conn,sqlText)
             return True;
+
+    def followFriends(self,userid,friendid):
+        sqlText="insert into friends values(%d,%d);"%(friendid,userid)
+        result=sql.insertDB(self.conn,sqlText)
+        return result;
+
+    def cancelFollow(self,userid,friendid):
+        sqlText="delete from friends where userid=%d and friendid=%d;"%(userid,friendid)
+        result=sql.deleteDB(self.conn,sqlText)
+        return result;
+
+    def getUsers(self,userid):
+        sqlText="select userid,name,country,(select Count(*) from friends \
+                where users.userid=friends.friendid and friends.userid=%d) as follow \
+                from users;"%(userid)
+        result=sql.queryDB(self.conn,sqlText)
+        return result;
+
+
+    def getUsersByName(self,userid,username):
+        sqlText="select userid,name,country,(select Count(*) from friends \
+                where users.userid=friends.friendid and friends.userid=%d) as follow \
+                from users where users.name='%s';"%(userid,username)
+        result=sql.queryDB(self.conn,sqlText)
+        return result;
+
+
+
+
+
+
 
