@@ -17,14 +17,9 @@ def login():
 
 @app.route("/sign_out")
 def sign_out():
-    #global conn
-    #sql.closeDB(conn)
-    session.pop("username",None)
     session.pop("userid",None)
-    #session.pop("posts",None)
-    #session.pop("comments",None)
+    session.pop("username",None)
     session.clear;
-    #print(session.get("userid"))
     return login();
 
 #2.aplly account
@@ -39,10 +34,6 @@ def check():
         UserName=request.form.get('username')
         PassWord=request.form.get('password')
        
-        #print(UserName)
-        #print(PassWord)
-
-       #global user,conn
         user=users.Users(conn,UserName,PassWord)
         result=user.userLogin()
         if result == True:
@@ -68,7 +59,6 @@ def createUser():
         userEmail=request.args.get('email')
         userCountry=request.args.get('country')
 
-        #print(userName)
         global conn
         user=users.Users(conn,userName,userPsw,userEmail,userCountry)
         result=user.userApply()
@@ -91,7 +81,7 @@ def mainWindow():
     global conn
     posts=post.Post(conn)
     userid=session.get("userid")
-    #print(userid)
+    
     if userid == None:
         return login();
     else:
@@ -108,21 +98,22 @@ def mainWindow():
                     }
             datas.append(datalist)
         dataJson=json.dumps(datas)
-    #test='''[{"name":"111"},{"name":"222"}]'''
-    #test=json.loads(dataJson)
-    #test="%s"%(dataJson)
-    #print(test)
+    
         username=session.get("username")
         return render_template('mainWindow.html',username=username,json=dataJson)
 
 
 #6.look through comments
-@app.route("/Lcomment",methods=["POST","GET"])
-def Lcomment():
+@app.route("/commentWeb",methods=["POST","GET"])
+def commentWeb():
+    username=session.get("username")
+    if username == None:
+        return login();
+    
     global conn
-    data=json.loads(request.form.get('data'))
-    postid=int(data["postid"])
-    #print(postid)
+    
+    postid=int(session.get("postid"))
+    
     posts=post.Post(conn)
     post_datas=posts.getPostsByPostid(postid)
     postJson=[post_datas[0][0],post_datas[0][1],postid]
@@ -142,25 +133,19 @@ def Lcomment():
                 }
         comment_data.append(datalist)
     commentJson=json.dumps(comment_data)
-    #print(len(comment_data))
-    session["posts"]=postJson
-    session["comments"]=commentJson
-
-    return ""
-    #print("okkkkkkkk")
-
-@app.route("/commentWeb",methods=["POST","GET"])
-def commentWeb():
-    username=session.get("username")
-    postJson=session.get("posts")
-    commentJson=session.get("comments")
-    if username == None:
-        return login();
-    else:
-        return render_template('comment.html',Musername=username,username=postJson[0],\
+    
+    return render_template('comment.html',Musername=username,username=postJson[0],\
                 userpost=postJson[1],postid=postJson[2],commentjson=commentJson)
     
-    #return render_template('comment.html',user=user)
+
+@app.route("/Lcomment",methods=["POST","GET"])
+def LcommentWeb():
+    data=json.loads(request.form.get('data'))
+    postid=data["postid"]
+    session["postid"]=postid
+    
+    return ""
+    
 
 
 #7.submit comment
@@ -169,39 +154,14 @@ def SubComment():
     data=json.loads(request.form.get('data'))
     postid=int(data["postid"])
     mycomment=data["comment"]
-    #print(postid)
-    #print(mycomment)
+    
     global conn
     userid=session.get("userid")
     comments=comment.Comment(conn)
-    result=comments.insertData(mycomment,userid,postid)
-
-    comment_datas=comments.getCommentsByPostid(postid,userid)
-    comment_data=[];
-    for item in comment_datas:
-        datalist={
-                'like':item[0],
-                'flag':item[1],
-                'commentid':item[2],
-                'username':item[3],
-                'comment':item[4]
-                }
-        comment_data.append(datalist)
-    newcommentJson=json.dumps(comment_data)
-    session["comments"]=newcommentJson
-    print(len(comment_data))
+    comments.insertData(mycomment,userid,postid)
+    
     return ""
 
-@app.route("/newcommentWeb",methods=["POST","GET"])
-def newcommentWeb():
-    postJson=session.get("posts")
-    username=session.get("username")
-    newcommentJson=session.get("comments")
-    if username == None:
-        return login();
-    else:
-        return render_template('comment.html',Musername=username,username=postJson[0],\
-                userpost=postJson[1],postid=postJson[2],commentjson=newcommentJson)
 
 
 #7.send blogs
@@ -219,11 +179,11 @@ def postdata():
     if request.method == "POST":
         blogs=request.form.get('myblog')
         posts=post.Post(conn)
-        #userid=int(1)
+        
         userid=session.get("userid")
         ressult=posts.insertData(userid,blogs)
-        
-        return mainWindow();
+        return """<script>window.location.href="/mainWindow";</script>"""
+    
 
 #8.information
 @app.route("/Information",methods=["POST","GET"])
@@ -277,7 +237,7 @@ def deletePosts():
     global conn
     data=json.loads(request.form.get('data'))
     postid=int(data["postid"])
-    #print(postid)
+    
     posts=post.Post(conn)
     posts.deletePost(postid)
     return mainWindow();
@@ -289,23 +249,10 @@ def deleteComments():
     global conn
     data=json.loads(request.form.get('data'))
     commentid=int(data["commentid"])
-    #print(postid)
+    
     comments=comment.Comment(conn)
     comments.deleteComment(commentid)
-    postid=session.get("posts")[2]
-    comment_datas=comments.getCommentsByPostid(postid)
-    comment_data=[];
-    for item in comment_datas:
-        datalist={
-                'like':item[0],
-                'flag':item[1],
-                'commentid':item[2],
-                'username':item[3],
-                'comment':item[4]
-                }
-        comment_data.append(datalist)
-    newcommentJson=json.dumps(comment_data)
-    session["comments"]=newcommentJson
+    
     return "";
 
 #11.like/dislike post

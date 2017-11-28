@@ -6,7 +6,6 @@ class Users:
         self.password=password
         self.email=email
         self.country=country
-        self.inscription_date=None
         self.conn=conn
 
     def clean(self):
@@ -14,7 +13,7 @@ class Users:
         self.password=None;
         self.email=None;
         self.count=None;
-        self.inscription_date=None;
+ 
 
     def userLogin(self):
 

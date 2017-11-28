@@ -33,7 +33,9 @@ function sign_out()
 			location.replace("/sign_out");	
 				
 	}
-
+function Return(){
+	window.location.href="/mainWindow";  
+}
 
 </script>
 </head>
@@ -64,9 +66,10 @@ function sign_out()
 					<tr><td>Name:</td><td><input type="text" value="{{username}}" name="name" id="uname"></td><td><SPAN id="nametext"></SPAN></td></tr>
 					<tr><td>Email:</td><td><input type="text" value="{{email}}" name="email" id="uemail"></td><td><SPAN id="emailtext"></SPAN></td</tr>
 					<tr><td>Password:</td><td><input type="text" value="{{password}}" name="password" id="upass"></td><td><SPAN id="pswtext"></SPAN></td</tr>
-					<tr><td>Country:</td><td><input type="text" value="{{country}}" name="countrys"></td></tr>
+					<tr><td>Country:</td><td><input type="text" value="{{country}}" name="country"></td></tr>
 				</table>				
 				<input type="submit"  value="Confirm" style="margin-left:40%;margin-top:5px;" />
+				<input type="button" onclick="javascript:Return();" value="Return"  />
 				</form>
 					
 			</div>
