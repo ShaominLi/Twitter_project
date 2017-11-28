@@ -350,21 +350,18 @@ def searchUser():
     username=data["username"]
     userid=session.get("userid")
     allUsers=user.getUsersByName(userid,username)
-    for item in allUsers:
-        datalist={
-                'userid':item[0],
-                'username':item[1],
-                'country':item[2],
-                'follow':item[3]
-                }
-    if datalist != "":
+    if allUsers != []:
+        for item in allUsers:
+            datalist={
+                    'userid':item[0],
+                    'username':item[1],
+                    'country':item[2],
+                    'follow':item[3]
+                    }
         AllUsers=json.dumps(datalist)
         return AllUsers;
     else:
-        return ""
-
-
-
+        return "nobody"
 
 
 

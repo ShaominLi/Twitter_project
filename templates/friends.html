@@ -140,9 +140,35 @@ function Search(){
 			type: 'POST',
 			data: data,
 			success: function (dat) {
-				//var str=JSON.stringify(dat);
-				//var user=$.parseJSON(JSON.parse(str));
-				alert(dat);
+				if(dat == "nobody")
+					alert("user not exist!");
+				else{
+					var str=JSON.stringify(dat);
+					var user=$.parseJSON(JSON.parse(str));
+					//alert(user.username)
+					var str="";
+					$("#comments").html(str)
+					var t = document.createElement('table');
+					t.style="border:2px; width:100%;table-layout:fixed;text-align: center;";
+					var myname="{{Musername}}";
+					
+					var r = t.insertRow();
+					var name = r.insertCell();
+					name.innerHTML = user.username;
+					name.style="width:15%;vertical-align:middle;";
+					var country = r.insertCell();
+					country.style="width:60%;table-layout:fixed;table-layout:fixed;text-align: center;";
+					country.innerHTML = user.country;
+					if(myname != user.username){
+						var follow = r.insertCell();
+						var followtext=["follow","cancel"];
+						follow.innerHTML = "<a style='color:#3333FF;font-size:13px'; href='javascript:void(0);' onclick='follow(this)' id='"+user.userid+"' >"+followtext[parseInt(user.follow)]+"</a>";
+						follow.style="width:10%;vertical-align:middle;";
+					}
+					     
+					
+				document.getElementById('comments').appendChild(t);
+				}
 			}
     	});
 
