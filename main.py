@@ -17,13 +17,15 @@ def login():
 
 @app.route("/sign_out")
 def sign_out():
-    global conn
-    sql.closeDB(conn)
+    #global conn
+    #sql.closeDB(conn)
     session.pop("username",None)
     session.pop("userid",None)
-    session.pop("posts",None)
-    session.pop("comments",None)
-    return ;
+    #session.pop("posts",None)
+    #session.pop("comments",None)
+    session.clear;
+    #print(session.get("userid"))
+    return login();
 
 #2.aplly account
 @app.route("/apply")
@@ -89,25 +91,29 @@ def mainWindow():
     global conn
     posts=post.Post(conn)
     userid=session.get("userid")
-    allBlogs=posts.getAllPosts(userid)
+    #print(userid)
+    if userid == None:
+        return login();
+    else:
+        allBlogs=posts.getAllPosts(userid)
 
-    datas=[];
-    for item in allBlogs:
-        datalist={
-                'username':item[0],
-                'post':item[1],
-                'postid':item[2],
-                'like':item[3],
-                'flag':item[4]
-                }
-        datas.append(datalist)
-    dataJson=json.dumps(datas)
+        datas=[];
+        for item in allBlogs:
+            datalist={
+                    'username':item[0],
+                    'post':item[1],
+                    'postid':item[2],
+                    'like':item[3],
+                    'flag':item[4]
+                    }
+            datas.append(datalist)
+        dataJson=json.dumps(datas)
     #test='''[{"name":"111"},{"name":"222"}]'''
     #test=json.loads(dataJson)
     #test="%s"%(dataJson)
     #print(test)
-    username=session.get("username")
-    return render_template('mainWindow.html',username=username,json=dataJson)
+        username=session.get("username")
+        return render_template('mainWindow.html',username=username,json=dataJson)
 
 
 #6.look through comments
@@ -148,9 +154,11 @@ def commentWeb():
     username=session.get("username")
     postJson=session.get("posts")
     commentJson=session.get("comments")
-
-    return render_template('comment.html',Musername=username,username=postJson[0],\
-            userpost=postJson[1],postid=postJson[2],commentjson=commentJson)
+    if username == None:
+        return login();
+    else:
+        return render_template('comment.html',Musername=username,username=postJson[0],\
+                userpost=postJson[1],postid=postJson[2],commentjson=commentJson)
     
     #return render_template('comment.html',user=user)
 
@@ -189,15 +197,22 @@ def newcommentWeb():
     postJson=session.get("posts")
     username=session.get("username")
     newcommentJson=session.get("comments")
-    return render_template('comment.html',Musername=username,username=postJson[0],\
-            userpost=postJson[1],postid=postJson[2],commentjson=newcommentJson)
+    if username == None:
+        return login();
+    else:
+        return render_template('comment.html',Musername=username,username=postJson[0],\
+                userpost=postJson[1],postid=postJson[2],commentjson=newcommentJson)
 
 
 #7.send blogs
 @app.route("/SendBlogs",methods=["POST","GET"])
 def SendBlogs():
     username=session.get("username")
-    return render_template("post.html",username=username);
+    print(username)
+    if username == None:
+        return login()
+    else:
+        return render_template("post.html",username=username);
 @app.route("/postdata",methods=["POST","GET"])
 def postdata():
     global conn
@@ -215,15 +230,18 @@ def postdata():
 def Information():
     global conn
     username=session.get("username")
-    userid=session.get("userid")
-    user=users.Users(conn)
-    informations=user.getAllInformation(userid)
-    userpassword=informations[0][1]
-    useremail=informations[0][2]
-    usercountry=informations[0][3]
+    if username == None:
+        return login();
+    else:
+        userid=session.get("userid")
+        user=users.Users(conn)
+        informations=user.getAllInformation(userid)
+        userpassword=informations[0][1]
+        useremail=informations[0][2]
+        usercountry=informations[0][3]
 
-    return render_template('information.html',username=username,\
-            password=userpassword,email=useremail,country=usercountry)
+        return render_template('information.html',username=username,\
+                password=userpassword,email=useremail,country=usercountry)
 
 @app.route("/ModifyInfo",methods=["POST","GET"])
 def ModifyInfo():
@@ -337,6 +355,8 @@ def dislikeComment():
 def friends():
     global conn
     username=session.get("username")
+    if username == None:
+        return login();
     userid=session.get("userid")
     user=users.Users(conn)
     allUsers=user.getUsers(userid)

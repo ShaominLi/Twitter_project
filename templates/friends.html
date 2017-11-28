@@ -111,8 +111,12 @@ function switchPage(divId, page) {
 	
 	//alert(page);
 }
-
-		
+function sign_out()
+	{
+		if(confirm("confirm sign out?"))
+			location.replace("/sign_out");	
+				
+	}	
 	
 function send_blog(){
 	window.location.href="/SendBlogs";  
