@@ -58,6 +58,7 @@ function showdata(index,end){
 		var myname="{{Musername}}";
 		for (var i=index;i<end;i++)
 		{
+			if(myname == obj[i].username){continue;}
 			var r = t.insertRow();
 			var name = r.insertCell();
 			name.innerHTML = obj[i].username;

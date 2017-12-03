@@ -1,6 +1,6 @@
 from flask import Flask,session,redirect,url_for,request,render_template
 from modules import users,post,comment,sql
-import json
+import json,base64
 
 app=Flask(__name__)
 app.secret_key='\xf1\x92Y\xdf\x8ejY\x04\x96\xb4V\x88\xfb\xfc\xb5\x18F\xa3\xee\xb9\xb9t\x01\xf0\x96'
@@ -32,7 +32,9 @@ def apply():
 def check():
     if request.method == "POST":
         UserName=request.form.get('username')
-        PassWord=request.form.get('password')
+        tempPsw=request.form.get('password').encode(encoding="utf-8")
+        PassWord=base64.encodestring(tempPsw).decode()
+        #PassWord=request.form.get('password')
        
         user=users.Users(conn,UserName,PassWord)
         result=user.userLogin()
@@ -55,7 +57,9 @@ def check():
 def createUser():
     if request.method == "GET":
         userName=request.args.get('name')
-        userPsw=request.args.get('password')
+        tempPsw=request.args.get('password').encode(encoding="utf-8")
+
+        userPsw=base64.encodestring(tempPsw).decode()
         userEmail=request.args.get('email')
         userCountry=request.args.get('country')
 
@@ -196,7 +200,7 @@ def Information():
         userid=session.get("userid")
         user=users.Users(conn)
         informations=user.getAllInformation(userid)
-        userpassword=informations[0][1]
+        userpassword=base64.decodestring(informations[0][1].encode(encoding="utf-8")).decode()
         useremail=informations[0][2]
         usercountry=informations[0][3]
 
@@ -208,7 +212,8 @@ def ModifyInfo():
     global conn
     if request.method == "GET":
         userName=request.args.get('name')
-        userPsw=request.args.get('password')
+        tempPsw=request.args.get('password').encode(encoding="utf-8")
+        userPsw=base64.encodestring(tempPsw).decode()
         userEmail=request.args.get('email')
         userCountry=request.args.get('country')
 
