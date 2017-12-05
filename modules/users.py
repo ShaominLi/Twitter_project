@@ -17,10 +17,9 @@ class Users:
 
     def userLogin(self):
 
-        sqlName="select count(*) from users where name='%s' and \
-                password='%s';"%(self.name,self.password)
-        checkName=sql.queryDB(self.conn,sqlName)
-
+        sqlName="select count(*) from users where name=%s and password=%s;"
+        params = [self.name,self.password]
+        checkName=sql.queryDB(self.conn,sqlName,params)
         result=checkName[0][0]
         if result == 0:
             self.clean()
@@ -30,84 +29,93 @@ class Users:
 
 
     def userApply(self):
-        t_sql_insert="insert into \
+        sql_insert="insert into \
                 users(name,password,email,country,inscription_date) \
-                values('{name}','{psw}','{email}','{country}',current_timestamp(0));"
-        sql_insert=t_sql_insert.format(name=self.name,psw=self.password,\
-                email=self.email,country=self.country)
+                values(%s,%s,%s,%s,current_timestamp(0));"
 
-        sqlName="select count(*) from users where name='%s';"%(self.name)
-        checkName=sql.queryDB(self.conn,sqlName)
-    
+        sqlName="select count(*) from users where name=%s;"
+        params = [self.name]
+        checkName=sql.queryDB(self.conn,sqlName,params)
         #no name
         if checkName[0][0] == 0:
-            sql.insertDB(self.conn,sql_insert)
+            params.extend([self.password,self.email,self.country])
+            sql.insertDB(self.conn,sql_insert,params)
             return True
         else:
             return False
 
     def getUserID(self):
-        sqlName="select userid from users where name='%s';"%(self.name)
-        userid=sql.queryDB(self.conn,sqlName)
+        sqlName="select userid from users where name=%s;"
+        params = [self.name]
+        userid=sql.queryDB(self.conn,sqlName,params)
         return userid[0][0];
 
     def getAllPosts(self):
-        sqlText="select comment from post where userid=%d order by date;"
-        allposts=sql.queryDB(self.conn,sqlText)
+        sqlText="select comment from post where userid=%s order by date;"
+        params = [self.userid]
+        allposts=sql.queryDB(self.conn,sqlName,params)
         return allposts;
 
 
     def getAllComments(self):
-        sqlText="select comment from comments where userid=%d order by date;"
-        allposts=sql.queryDB(self.conn,sqlText)
+        sqlText="select comment from comments where userid=%s order by date;"
+        params = [self.userid]
+        allposts=sql.queryDB(self.conn,sqlText,params)
         return allposts;
 
     def getAllInformation(self,userid):
-        sqlText="select name,password,email,country from users where userid=%d;"%(userid)
-        information=sql.queryDB(self.conn,sqlText)
+        sqlText="select name,password,email,country from users where userid=%s;"
+        params = [userid]
+        information=sql.queryDB(self.conn,sqlText,params)
         return information;
 
 
     def modifyUserInfo(self,userid,flag):
         sqlText="update users \
-                set name='%s',password='%s',email='%s',country='%s' \
-                where userid='%d';"%(self.name,self.password,self.email,self.country,userid)
+                set name=%s,password=%s,email=%s,country=%s where userid=%s;"
         if(flag==1): 
-            sqlName="select count(*) from users where name='%s';"%(self.name)
-            checkName=sql.queryDB(self.conn,sqlName)
+            sqlName="select count(*) from users where name=%s;"
+            params = [self.name]
+            checkName=sql.queryDB(self.conn,sqlName,params)
             #no name
             if checkName[0][0] == 0:
-                sql.updateDB(self.conn,sqlText)
+                params.extend([self.password,self.email,self.country,userid])
+                sql.updateDB(self.conn,sqlText,params)
                 return True
             else:
                 return False
         else:
-            sql.updateDB(self.conn,sqlText)
+            params=[self.name,self.password,self.email,self.country,userid]
+            sql.updateDB(self.conn,sqlText,params)
             return True;
 
     def followFriends(self,userid,friendid):
-        sqlText="insert into friends values(%d,%d);"%(friendid,userid)
-        result=sql.insertDB(self.conn,sqlText)
+        sqlText="insert into friends values(%s,%s);"
+        params=[friendid,userid]
+        result=sql.insertDB(self.conn,sqlText,params)
         return result;
 
     def cancelFollow(self,userid,friendid):
-        sqlText="delete from friends where userid=%d and friendid=%d;"%(userid,friendid)
-        result=sql.deleteDB(self.conn,sqlText)
+        sqlText="delete from friends where userid=%d and friendid=%s;"
+        params=[userid,friendid]
+        result=sql.deleteDB(self.conn,sqlText,params)
         return result;
 
     def getUsers(self,userid):
         sqlText="select userid,name,country,(select Count(*) from friends \
-                where users.userid=friends.friendid and friends.userid=%d) as follow \
-                from users;"%(userid)
-        result=sql.queryDB(self.conn,sqlText)
+                where users.userid=friends.friendid and friends.userid=%s) as follow \
+                from users;"
+        params=[userid]
+        result=sql.queryDB(self.conn,sqlText,params)
         return result;
 
 
     def getUsersByName(self,userid,username):
         sqlText="select userid,name,country,(select Count(*) from friends \
-                where users.userid=friends.friendid and friends.userid=%d) as follow \
-                from users where users.name='%s';"%(userid,username)
-        result=sql.queryDB(self.conn,sqlText)
+                where users.userid=friends.friendid and friends.userid=%s) as follow \
+                from users where users.name~%s;"
+        params=[userid,username]
+        result=sql.queryDB(self.conn,sqlText,params)
         return result;
 
 

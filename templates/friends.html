@@ -129,6 +129,11 @@ function Return(){
 function information(){
 	window.location.href="/Information";  
 } 
+function follow()
+	{
+		window.location.href="/friends"; ;
+	}
+
 function Search(){
 	var name=$('#searchName').val();
 	//alert(name);
@@ -198,11 +203,14 @@ function Search(){
 			<!-- user post -->
 			<div style="text-align: center;width:100%;height:7%;background-color: #70658A;border-radius: 5px;margin-bottom: 3px;">
 			<div style="width:20%;height:100%; float:left;line-height:50px;color:#FFFFFF;font-weight: bold;">
-			<a href="javascript:Search();" style="color: #FFF;">Search</a>
-</div> 
-			<div style="width:80%;height:100%; float:left;">
+			<font style="color: #FFF;">Input Name</font>
+</div> 		
+			<div style="width:65%;height:100%; float:left;">
 				<input type="text" style="font-weight:bold;width:100%;height:100%;" id="searchName"/>
-			</div>			
+			</div>	
+			<div style="width:15%;height:100%; float:left;color:#FFFFFF;font-weight: bold;margin-top:9px;">
+			<input type="button" onclick="javascript:Search();" value="Search"/>
+</div> 		
 			</div>
 			
 
@@ -242,6 +250,7 @@ function Search(){
 	        <li ><a href="javascript:sign_out();">Sign out</a></li>
 		<li ><a href="javascript:send_blog();">Send Blog</a></li>
 	    	<li ><a href="javascript:information();">Information</a></li>
+		<li ><a href="javascript:follow();">Find Friends</a></li>
 	  	</ul>
 	</div>
 

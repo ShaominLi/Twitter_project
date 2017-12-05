@@ -36,7 +36,14 @@ function sign_out()
 function Return(){
 	window.location.href="/mainWindow";  
 }
-
+function follow()
+{
+	window.location.href="/friends"; ;
+}
+function information()
+{
+	window.location.href="/Information";  
+} 
 </script>
 </head>
 <body>
@@ -91,7 +98,8 @@ function Return(){
 		<ul style="display:none;" id="menu">
 	        <li ><a href="javascript:sign_out();">Sign out</a></li>
 		<li ><a href="javascript:send_blog();">Send Blog</a></li>
-	    	<li ><a href="#">Information</a></li>
+	    	<li ><a href="javascript:information();">Information</a></li>
+		<li ><a href="javascript:follow();">Find Friends</a></li>
 	  	</ul>
 	</div>
 
