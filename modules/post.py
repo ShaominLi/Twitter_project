@@ -55,3 +55,9 @@ class Post:
         params=[postid]
         result=sql.deleteDB(self.conn,sqlText,params)
         return result;
+
+    def modifyData(self,postid,post):
+        sqlText="update post set comment=%s where postid=%s;"
+        params=[post,postid];
+        result=sql.updateDB(self.conn,sqlText,params)
+        return result;

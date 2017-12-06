@@ -1,0 +1,103 @@
+
+<html>
+<title>our Twitter</title>
+<head>
+<!-- Custom-Theme-Files -->
+	<link href="{{url_for('static',filename='css/Mainstyle.css')}}" rel="stylesheet" type="text/css"/>
+<!-- //Custom-Theme-Files -->
+	<script src="{{url_for('static',filename = 'js/jquery-1.11.1.min.js')}}"></script>
+	
+	<script type="text/javascript" src="{{url_for('static',filename = 'js/page.js')}}"></script>
+<script>
+	var display = false;
+	function show(){
+	    if(display){
+	       document.getElementById('menu').style.display = "none";
+	       display = false;
+	     }
+	    else {
+		document.getElementById('menu').style.display = "";
+		display = true;
+	    }
+	}
+	
+	
+function send_blog(){
+	window.location.href="/SendBlogs";  
+} 
+function sign_out()
+	{
+		if(confirm("confirm sign out?"))
+			location.replace("/sign_out");	
+				
+	}
+function follow()
+	{
+		window.location.href="/friends"; ;
+	}
+function information(){
+		window.location.href="/Information";  
+	} 
+</script>
+</head>
+<body>
+<div style="width:100%; height:100%;">
+
+<div style="width:20%; height:100%; float:left;"></div>
+
+<div style="width:60%; height:100%; float:left;">
+<h1 style="margin-top:5%;">Welcome our world</h1>
+<div class="container">
+<!-- Mainbar-Starts-Here -->
+		<div class="main-bar" style="height:30px;">
+			<div class="comment">
+				<h3>Modify Blogs</h3>
+			</div>
+		</div>
+		
+		
+		
+		<div class="items" id="datas">
+			<!-- user post -->
+			
+			<!-- my comment -->
+			<div style="width:100%;height:20%;background-color: #70658A;border-radius: 5px;margin-bottom: 3px;">
+				<form action="/modifycommentdata" method="post">
+				<textarea name="myblog" style="font-weight:bold;width:100%;height:70%;">{{comment}}</textarea>
+				<input type="submit"  value="Confirm" style="margin-left:85%;" />
+				</form>
+					
+			</div>
+
+		</div>
+		
+		
+		
+		
+</div>
+	
+
+
+
+</div>
+<div style="width:20%; height:100%; float:left;">
+	<div class="sign-out" >
+		<a href="javascript:show();">{{username}}</a>
+		<ul style="display:none;" id="menu">
+	       <li ><a href="javascript:sign_out();">Sign out</a></li>
+		<li ><a href="javascript:send_blog();">Send Blog</a></li>
+	    	<li ><a href="javascript:information();">Information</a></li>
+		<li ><a href="javascript:follow();">Find Friends</a></li
+	  	</ul>
+	</div>
+
+</div>
+
+
+
+
+</div>
+
+
+</body>
+</html>

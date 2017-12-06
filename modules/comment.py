@@ -53,5 +53,16 @@ class Comment:
         result=sql.deleteDB(self.conn,sqlText,params)
         return result;
 
+    def getCommentsByCommentid(self,commentid):
+        sqlText="select comment from comments where commentid=%s"
+        params=[commentid]
+        result=sql.queryDB(self.conn,sqlText,params)
+        return result;
+
+    def modifyData(self,commentid,text):
+        sqlText="update comments set comment=%s where commentid=%s"
+        params=[text,commentid]
+        result=sql.updateDB(self.conn,sqlText,params)
+        return result;
 
 

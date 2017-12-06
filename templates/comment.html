@@ -9,6 +9,10 @@
 	
 	<script type="text/javascript" src="{{url_for('static',filename = 'js/page.js')}}"></script>
 <script>
+	function follow()
+	{
+		window.location.href="/friends"; ;
+	}
 	var display = false;
 	function show(){
 	    if(display){
@@ -37,7 +41,20 @@
     			});
 
 	}
-
+	function modifyComment(obj)
+	{
+		var data = {
+         	data: JSON.stringify({"commentid": obj.id})
+	   	}
+		     $.ajax({
+			url:"/modifyComments",
+			type: 'POST',
+			data: data,
+			success: function (msg) {
+				window.location.href="/modifycommentweb";  
+			}
+    			});
+	}
 	function like(obj)
 	{
 		var likeid="like"+obj.id;
@@ -102,6 +119,10 @@
 				var del = r.insertCell();
 				del.innerHTML = "<a style='color:#3333FF;font-size:13px;' href='javascript:void(0);' onclick='deleteComment(this)' id='"+obj[i].commentid+"' >delete</a>";
 				del.style="width:10%;vertical-align:middle;";
+
+				var mod = r.insertCell();
+				mod.innerHTML = "<a style='color:#3333FF;font-size:13px;' href='javascript:void(0);' onclick='modifyComment(this)' id='"+obj[i].commentid+"' >modify</a>";
+				mod.style="width:10%;vertical-align:middle;";
 			}
 		     
 		}
@@ -247,6 +268,7 @@ function sign_out()
 	        <li ><a href="javascript:sign_out();">Sign out</a></li>
 		<li ><a href="javascript:send_blog();">Send Blog</a></li>
 	    	<li ><a href="javascript:information();">Information</a></li>
+		<li ><a href="javascript:follow();">Find Friends</a></li>
 	  	</ul>
 	</div>
 

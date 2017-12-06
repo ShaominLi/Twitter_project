@@ -369,6 +369,64 @@ def searchUser():
         return "nobody"
 
 
+#14.modify post and comments
+@app.route("/modifyPosts",methods=["POST","GET"])
+def modifyPosts():
+    data=json.loads(request.form.get('data'))
+    postid=data["postid"]
+    session["postid"]=postid
+    return ""
+@app.route("/modifypostweb",methods=["POST","GET"])
+def modifypostweb():
+    username=session.get("username")
+    if username == None:
+        return login();
+    global conn
+    postid=int(session.get("postid"))
+    posts=post.Post(conn)
+    post_datas=posts.getPostsByPostid(postid)
+    userpost=post_datas[0][1]
+    return render_template('modifypost.html',username=username,post=userpost)
+@app.route("/modifypostdata",methods=["POST","GET"])
+def modifypostdata():
+    global conn
+    if request.method == "POST":
+        blogs=request.form.get('myblog')
+        postid=int(session.get("postid"))
+        posts=post.Post(conn)
+        print(postid)
+        ressult=posts.modifyData(postid,blogs)
+        return """<script>window.location.href="/mainWindow";</script>"""
+
+
+@app.route("/modifyComments",methods=["POST","GET"])
+def modifyComments():
+    data=json.loads(request.form.get('data'))
+    commentid=data["commentid"]
+    session["commentid"]=commentid
+    return ""
+@app.route("/modifycommentweb",methods=["POST","GET"])
+def modifycommentweb():
+    username=session.get("username")
+    if username == None:
+        return login();
+    global conn
+    commentid=int(session.get("commentid"))
+    comments=comment.Comment(conn);
+    datas=comments.getCommentsByCommentid(commentid)
+    text=datas[0][0]
+    return render_template('modifycomment.html',username=username,comment=text)
+@app.route("/modifycommentdata",methods=["POST","GET"])
+def modifycommentdata():
+    global conn
+    if request.method == "POST":
+        blogs=request.form.get('myblog')
+        commentid=int(session.get("commentid"))
+        comments=comment.Comment(conn);
+        ressult=comments.modifyData(commentid,blogs)
+        return """<script>window.location.href="/commentWeb";</script>"""
+
+
 
 
 

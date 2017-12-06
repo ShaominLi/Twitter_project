@@ -35,6 +35,20 @@
     			});
 
 	}
+	function modifyPost(obj)
+	{
+		var data = {
+         	data: JSON.stringify({"postid": obj.id})
+	   	}
+		     $.ajax({
+			url:"/modifyPosts",
+			type: 'POST',
+			data: data,
+			success: function (msg) {
+				window.location.href="/modifypostweb";  
+			}
+    			});
+	}
 	//var like_value=false;
 	function like(obj)
 	{
@@ -129,6 +143,11 @@
 				var del = r.insertCell();
 				del.innerHTML = "<a style='color:#3333FF;font-size:13px;' href='javascript:void(0);' onclick='deletePost(this)' id='"+obj[i].postid+"' >delete</a>";
 				del.style="width:10%;vertical-align:middle;";
+				
+				var mod = r.insertCell();
+				mod.innerHTML = "<a style='color:#3333FF;font-size:13px;' href='javascript:void(0);' onclick='modifyPost(this)' id='"+obj[i].postid+"' >modify</a>";
+				mod.style="width:10%;vertical-align:middle;";
+
 			}
 		     
 		}
