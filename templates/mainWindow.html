@@ -134,19 +134,19 @@
 			var comment = r.insertCell();
 			comment.innerHTML = "<a style='color:#000' href='javascript:void(0);' onclick='comment(this)' id='"+obj[i].postid+"' >comments</a>";
 			//comment.id=obj[i].postid;
-			comment.style="width:15%;vertical-align:middle;";
+			comment.style="width:12%;vertical-align:middle;";
 			var like = r.insertCell();
 			var liketext=["like","dislike"];
-			like.innerHTML = "<a style='color:#000' href='javascript:void(0);' onclick='like(this)' id='"+obj[i].postid+"' >"+liketext[parseInt(obj[i].flag)]+"</a><span style='color:#9F4D95;font-size:12px;margin-left:5px;' id='like"+obj[i].postid+"'>"+obj[i].like+"</span>";
+			like.innerHTML = "<a style='color:#000' href='javascript:void(0);' onclick='like(this)' id='"+obj[i].postid+"' >"+liketext[parseInt(obj[i].flag)]+"</a><span style='color:#9F4D95;font-size:12px;margin-left:2px;' id='like"+obj[i].postid+"'>"+obj[i].like+"</span>";
 			like.style="width:10%;vertical-align:middle;";
 			if(myname==obj[i].username){
 				var del = r.insertCell();
 				del.innerHTML = "<a style='color:#3333FF;font-size:13px;' href='javascript:void(0);' onclick='deletePost(this)' id='"+obj[i].postid+"' >delete</a>";
-				del.style="width:10%;vertical-align:middle;";
+				del.style="width:8%;vertical-align:middle;";
 				
 				var mod = r.insertCell();
 				mod.innerHTML = "<a style='color:#3333FF;font-size:13px;' href='javascript:void(0);' onclick='modifyPost(this)' id='"+obj[i].postid+"' >modify</a>";
-				mod.style="width:10%;vertical-align:middle;";
+				mod.style="width:8%;vertical-align:middle;";
 
 			}
 		     
