@@ -427,6 +427,52 @@ def modifycommentdata():
         return """<script>window.location.href="/commentWeb";</script>"""
 
 
+#15.documentation
+@app.route("/help")
+def help():
+    return render_template('documentation.html')
+@app.route("/user_login")
+def user_login():
+    return render_template('documentation/user-login.html')
+@app.route("/user_sign_up")
+def user_sign_up():
+    return render_template('documentation/user-sign-up.html')
+@app.route("/user_sign_out")
+def user_sign_out():
+    return render_template('documentation/user-sign-out.html')
+@app.route("/user_infomation")
+def user_infomation():
+    return render_template('documentation/user-information.html')
+
+@app.route("/blogs_send")
+def blogs_send():
+    return render_template('documentation/blogs-send.html')
+@app.route("/blogs_modify")
+def blogs_modify():
+    return render_template('documentation/blogs-modify.html')
+@app.route("/blogs_delete")
+def blogs_delete():
+    return render_template('documentation/blogs-delete.html')
+@app.route("/blogs_like")
+def blogs_like():
+    return render_template('documentation/blogs-like.html')
+
+@app.route("/comments_send")
+def comments_send():
+    return render_template('documentation/comments-send.html')
+@app.route("/comments_modify")
+def comments_modify():
+    return render_template('documentation/comments-modify.html')
+@app.route("/comments_delete")
+def comments_delete():
+    return render_template('documentation/comments-delete.html')
+@app.route("/comments_like")
+def comments_like():
+    return render_template('documentation/comments-like.html')
+
+@app.route("/friends_search")
+def friends_search():
+    return render_template('documentation/friends-search.html')
 
 
 
